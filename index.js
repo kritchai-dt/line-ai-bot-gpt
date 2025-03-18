@@ -3,25 +3,23 @@ const line = require('@line/bot-sdk');
 const axios = require('axios');
 require('dotenv').config();
 
-// ✅ Log ENV ตรงนี้ ตรวจสอบค่าก่อนใช้งาน
 console.log('LINE_CHANNEL_ACCESS_TOKEN:', process.env.LINE_CHANNEL_ACCESS_TOKEN);
 console.log('LINE_CHANNEL_SECRET:', process.env.LINE_CHANNEL_SECRET);
 console.log('OPENAI_API_KEY:', process.env.OPENAI_API_KEY);
 
 const app = express();
-app.use(express.json());  // ✅ สำคัญมาก อ่าน body ได้
 
 const config = {
   channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN,
   channelSecret: process.env.LINE_CHANNEL_SECRET
 };
-const client = new line.Client(config);
-app.use(line.middleware(config)); // ✅ ต้องมี middleware
 
-// ✅ Route /webhook ต้องตอบ 200 เสมอ
-app.post('/webhook', async (req, res) => {
-  console.log(JSON.stringify(req.body));  // ✅ log เช็คว่ามา
+const client = new line.Client(config);
+
+// ✅ Webhook route ตรงนี้สำคัญมาก
+app.post('/webhook', line.middleware(config), async (req, res) => {
   try {
+    console.log('LINE Webhook Received:', req.body.events);
     await Promise.all(req.body.events.map(handleEvent));
     res.status(200).end();
   } catch (err) {
@@ -30,7 +28,9 @@ app.post('/webhook', async (req, res) => {
   }
 });
 
-// ✅ ฟังก์ชันรับ event และยิง AI
+// ✅ ส่วนนี้ใช้ json ได้เฉพาะ route อื่น
+app.use(express.json());
+
 async function handleEvent(event) {
   if (event.type !== 'message' || event.message.type !== 'text') return;
 
@@ -46,7 +46,6 @@ async function handleEvent(event) {
   }
 }
 
-// ✅ ฟังก์ชันเรียก GPT
 async function getGPTResponse(prompt) {
   try {
     const response = await axios.post('https://api.openai.com/v1/chat/completions', {
