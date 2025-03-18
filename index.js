@@ -35,7 +35,7 @@ async function handleEvent(event) {
   if (event.type !== 'message' || event.message.type !== 'text') return;
 
   const userMessage = event.message.text;
-  if (userMessage.includes('@DT-Bot')) {
+  if (userMessage.includes('@DT-bot')) {
     const prompt = userMessage.replace('@DT-bot', '').trim();
     const aiReply = await getGPTResponse(prompt);
 
