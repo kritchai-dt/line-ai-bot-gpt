@@ -7,7 +7,7 @@ const axios = require('axios');
 // ✅ Import Google Cloud Vision (ใส่ตรงนี้)
 const vision = require('@google-cloud/vision');
 const visionClient = new vision.ImageAnnotatorClient({
-  keyFilename: './coway-line-vision-key.json'  // path ไปยังไฟล์ JSON key ของคุณ
+  credentials: JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON)
 });
 
 console.log('LINE_CHANNEL_ACCESS_TOKEN:', process.env.LINE_CHANNEL_ACCESS_TOKEN);
