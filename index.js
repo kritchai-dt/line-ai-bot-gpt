@@ -1,7 +1,14 @@
+require('dotenv').config();
 const express = require('express');
 const line = require('@line/bot-sdk');
 const axios = require('axios');
-require('dotenv').config();
+
+
+// ✅ Import Google Cloud Vision (ใส่ตรงนี้)
+const vision = require('@google-cloud/vision');
+const visionClient = new vision.ImageAnnotatorClient({
+  keyFilename: './coway-line-vision-key.json'  // path ไปยังไฟล์ JSON key ของคุณ
+});
 
 console.log('LINE_CHANNEL_ACCESS_TOKEN:', process.env.LINE_CHANNEL_ACCESS_TOKEN);
 console.log('LINE_CHANNEL_SECRET:', process.env.LINE_CHANNEL_SECRET);
