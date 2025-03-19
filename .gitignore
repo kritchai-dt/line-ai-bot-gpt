@@ -3,3 +3,8 @@ node_modules/.env
 node_modules/
 *.json
 coway-line-vision-key.json
+
+echo "meta-chassis-440010-b2-8bfe2679fe7f.json"
+echo "*.json" >> .gitignore
+git add .gitignore
+git commit -m
