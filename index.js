@@ -39,17 +39,47 @@ app.post('/webhook', line.middleware(config), async (req, res) => {
 app.use(express.json());
 
 async function handleEvent(event) {
-  if (event.type !== 'message' || event.message.type !== 'text') return;
+  if (event.type !== 'message') return;
 
-  const userMessage = event.message.text;
-  if (userMessage.includes('@DT-bot')) {
-    const prompt = userMessage.replace('@DT-bot', '').trim();
-    const aiReply = await getGPTResponse(prompt);
+  // ✅ ถ้าเป็น "รูปภาพ" → ดึงจาก LINE แล้วยิง Google Vision OCR
+  if (event.message.type === 'image') {
+    console.log('📸 Image received, start OCR...');
 
+    const stream = await client.getMessageContent(event.message.id);
+    const chunks = [];
+    stream.on('data', (chunk) => chunks.push(chunk));
+
+    const imageBuffer = await new Promise((resolve, reject) => {
+      stream.on('end', () => resolve(Buffer.concat(chunks)));
+      stream.on('error', reject);
+    });
+
+    // ✅ ยิง Google Cloud Vision OCR
+    const [result] = await visionClient.textDetection({ image: { content: imageBuffer } });
+    const detections = result.textAnnotations;
+    const text = detections.length > 0 ? detections[0].description : '❌ ไม่พบข้อความในภาพ';
+
+    console.log('📝 OCR Result:', text);
+
+    // ✅ ตอบกลับ OCR
     return client.replyMessage(event.replyToken, {
       type: 'text',
-      text: aiReply
+      text: `✅ ข้อความในภาพ:\n${text}`
     });
+  }
+
+  // ✅ ถ้าเป็นข้อความ
+  if (event.message.type === 'text') {
+    const userMessage = event.message.text;
+    if (userMessage.includes('@DT-bot')) {
+      const prompt = userMessage.replace('@DT-bot', '').trim();
+      const aiReply = await getGPTResponse(prompt);
+
+      return client.replyMessage(event.replyToken, {
+        type: 'text',
+        text: aiReply
+      });
+    }
   }
 }
 
