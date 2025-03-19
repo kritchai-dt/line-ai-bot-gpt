@@ -1,3 +1,5 @@
 .env
 node_modules/.env
 node_modules/
+*.json
+coway-line-vision-key.json
