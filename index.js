@@ -41,40 +41,42 @@ app.use(express.json());
 async function handleEvent(event) {
   if (event.type !== 'message') return;
 
-  // ✅ ถ้าเป็น "รูปภาพ" → ดึงจาก LINE แล้วยิง Google Vision OCR
-  if (event.message.type === 'image') {
-    console.log('📸 Image received, start OCR...');
+  // ✅ Case: OCR เฉพาะโดน tag @DT-bot เท่านั้น
+  if (event.message.type === 'image' && event.message.mention) {
+    const mentionees = event.message.mention.mentionees || [];
+    const botMentioned = mentionees.some(m => m.userId === YOUR_BOT_USER_ID); // <-- แก้เป็น userId ของ bot
+    if (botMentioned) {
+      console.log('📸 Image received with @bot tag, start OCR...');
+      const stream = await client.getMessageContent(event.message.id);
+      const chunks = [];
+      stream.on('data', (chunk) => chunks.push(chunk));
 
-    const stream = await client.getMessageContent(event.message.id);
-    const chunks = [];
-    stream.on('data', (chunk) => chunks.push(chunk));
+      const imageBuffer = await new Promise((resolve, reject) => {
+        stream.on('end', () => resolve(Buffer.concat(chunks)));
+        stream.on('error', reject);
+      });
 
-    const imageBuffer = await new Promise((resolve, reject) => {
-      stream.on('end', () => resolve(Buffer.concat(chunks)));
-      stream.on('error', reject);
-    });
+      const [result] = await visionClient.textDetection({ image: { content: imageBuffer } });
+      const detections = result.textAnnotations;
+      const text = detections.length > 0 ? detections[0].description : '❌ ไม่พบข้อความในภาพ';
 
-    // ✅ ยิง Google Cloud Vision OCR
-    const [result] = await visionClient.textDetection({ image: { content: imageBuffer } });
-    const detections = result.textAnnotations;
-    const text = detections.length > 0 ? detections[0].description : '❌ ไม่พบข้อความในภาพ';
-
-    console.log('📝 OCR Result:', text);
-
-    // ✅ ตอบกลับ OCR
-    return client.replyMessage(event.replyToken, {
-      type: 'text',
-      text: `✅ ข้อความในภาพ:\n${text}`
-    });
+      console.log('📝 OCR Result:', text);
+      return client.replyMessage(event.replyToken, {
+        type: 'text',
+        text: `✅ ข้อความในภาพ:\n${text}`
+      });
+    } else {
+      console.log('📸 Image received but no bot tag, skip OCR.');
+      return;
+    }
   }
 
-  // ✅ ถ้าเป็นข้อความ
+  // ✅ Text + AI ตอบ
   if (event.message.type === 'text') {
     const userMessage = event.message.text;
     if (userMessage.includes('@DT-bot')) {
       const prompt = userMessage.replace('@DT-bot', '').trim();
       const aiReply = await getGPTResponse(prompt);
-
       return client.replyMessage(event.replyToken, {
         type: 'text',
         text: aiReply
