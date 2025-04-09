@@ -44,45 +44,64 @@ let lastImageMessageId = null;
 async function handleEvent(event) {
   if (event.type !== 'message') return;
 
-  // ✅ ถ้าเป็นรูป → เก็บ messageId ไว้ก่อน
   if (event.message.type === 'image') {
     console.log('📸 Image received');
     lastImageMessageId = event.message.id;
-    return; // ยังไม่ OCR
+    return;
   }
-  
-  // ✅ ถ้าเป็น text และมี @DT-bot → ค่อย OCR รูปล่าสุด
+
   if (event.message.type === 'text') {
     const userMessage = event.message.text;
-    const triggerKeywords = ['@dt helper', 'dt helper']; // ทั้งหมดใช้ lowercase
+    const triggerKeywords = ['@dt helper', 'dt helper'];
     const lowerCaseMessage = userMessage.toLowerCase();
     const isTrigger = triggerKeywords.some(keyword => lowerCaseMessage.includes(keyword));
-    
+
+    // ✅ ตรวจสอบสถานะการชำระเงิน
+    if (userMessage.toLowerCase().includes('ตรวจสอบการชำระเงิน')) {
+      const match = userMessage.match(/\d{5,}/);
+
+      if (!match) {
+        return client.replyMessage(event.replyToken, {
+          type: 'text',
+          text: 'กรุณาระบุหมายเลขการชำระเงิน เช่น: ตรวจสอบการชำระเงิน 574981'
+        });
+      }
+
+      const paymentAttemptId = match[0];
+      const result = await checkPaymentStatus(paymentAttemptId);
+
+      return client.replyMessage(event.replyToken, {
+        type: 'text',
+        text: result.message
+      });
+    }
+
+    // ✅ OCR รูป
     if (isTrigger && lastImageMessageId) {
       console.log('📝 DT Helper trigger detected, start OCR on last image...');
       const stream = await client.getMessageContent(lastImageMessageId);
       const chunks = [];
       stream.on('data', (chunk) => chunks.push(chunk));
-    
+
       const imageBuffer = await new Promise((resolve, reject) => {
         stream.on('end', () => resolve(Buffer.concat(chunks)));
         stream.on('error', reject);
       });
-    
+
       const [result] = await visionClient.textDetection({ image: { content: imageBuffer } });
       const detections = result.textAnnotations;
       const text = detections.length > 0 ? detections[0].description : '❌ ไม่พบข้อความในภาพ';
-    
+
       console.log('📝 OCR Result:', text);
       lastImageMessageId = null;
-    
+
       return client.replyMessage(event.replyToken, {
         type: 'text',
         text: `🤖 DT Helper อ่านให้แล้วครับ:\n\n${text}`
       });
     }
-    
-    // ✅ กรณีไม่มีรูป แต่เป็นข้อความที่สั่ง DT Helper ให้ตอบด้วย GPT
+
+    // ✅ ตอบ GPT
     if (isTrigger) {
       const prompt = triggerKeywords.reduce((msg, keyword) => msg.replace(new RegExp(keyword, 'gi'), ''), userMessage).trim();
       const aiReply = await getGPTResponse(prompt);
@@ -90,7 +109,55 @@ async function handleEvent(event) {
         type: 'text',
         text: aiReply
       });
-    } 
+    }
+  }
+}
+
+async function checkPaymentStatus(paymentAttemptId) {
+  const omiseKey = process.env.OMISE_SECRET_KEY;
+
+  try {
+    // ✅ ในกรณีนี้เราจำลองว่า charge_id กับ paymentAttemptId เป็น mapping ที่รู้กัน
+    // ถ้ามีระบบหลังบ้านจริง คุณควร fetch จาก Database หรือ API ของคุณเอง
+    const chargeIdMap = {
+      "574981": "chrg_61nzvzxbf43jjvnurg4"  // ตัวอย่างจำลอง
+    };
+
+    const chargeId = chargeIdMap[paymentAttemptId];
+    if (!chargeId) {
+      return { found: false, message: `ไม่พบข้อมูลการชำระเงินหมายเลข ${paymentAttemptId}` };
+    }
+
+    // ✅ เรียก Omise API
+    const response = await axios.get(`https://api.omise.co/charges/${chargeId}`, {
+      auth: {
+        username: omiseKey,
+        password: ''
+      }
+    });
+
+    const charge = response.data;
+    const status = charge.status;
+    const result = charge.metadata?.x_result;
+
+    if (status !== 'successful' || result !== 'successful') {
+      return {
+        found: true,
+        message: `❌ การชำระเงินหมายเลข ${paymentAttemptId} ไม่สำเร็จ\nสถานะล่าสุด: ${status}`
+      };
+    }
+
+    return {
+      found: true,
+      message: `✅ การชำระเงินหมายเลข ${paymentAttemptId} สำเร็จเรียบร้อยครับ\nสถานะล่าสุด: ${status}`
+    };
+
+  } catch (error) {
+    console.error("Omise API Error:", error);
+    return {
+      found: false,
+      message: "⚠️ ไม่สามารถเชื่อมต่อกับระบบ Omise ได้ กรุณาลองใหม่อีกครั้ง"
+    };
   }
 }
 
