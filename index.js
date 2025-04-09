@@ -120,7 +120,8 @@ async function checkPaymentStatus(paymentAttemptId) {
     // ✅ ในกรณีนี้เราจำลองว่า charge_id กับ paymentAttemptId เป็น mapping ที่รู้กัน
     // ถ้ามีระบบหลังบ้านจริง คุณควร fetch จาก Database หรือ API ของคุณเอง
     const chargeIdMap = {
-      "574981": "chrg_61nzvzxbf43jjvnurg4"  // ตัวอย่างจำลอง
+      "774518": "chrg_test_633qnxoq4tsp8la6mpy",
+      "489767": "chrg_test_60tizjzvq9y685jcxkt" // ตัวอย่างจำลอง
     };
 
     const chargeId = chargeIdMap[paymentAttemptId];
