@@ -121,7 +121,8 @@ async function checkPaymentStatus(paymentAttemptId) {
     // ถ้ามีระบบหลังบ้านจริง คุณควร fetch จาก Database หรือ API ของคุณเอง
     const chargeIdMap = {
       "774518": "chrg_test_633qnxoq4tsp8la6mpy",
-      "489767": "chrg_test_60tizjzvq9y685jcxkt" // ตัวอย่างจำลอง
+      "489767": "chrg_test_60tizjzvq9y685jcxkt",
+      "818471": "chrg_test_63busw01lwtq7myho4x" // ตัวอย่างจำลอง
     };
 
     const chargeId = chargeIdMap[paymentAttemptId];
