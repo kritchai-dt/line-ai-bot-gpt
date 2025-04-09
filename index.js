@@ -50,43 +50,47 @@ async function handleEvent(event) {
     lastImageMessageId = event.message.id;
     return; // ยังไม่ OCR
   }
-
+  
   // ✅ ถ้าเป็น text และมี @DT-bot → ค่อย OCR รูปล่าสุด
   if (event.message.type === 'text') {
     const userMessage = event.message.text;
-    if (userMessage.includes('@DT-bot') && lastImageMessageId) {
-      console.log('📝 @DT-bot detected, start OCR on last image...');
+    const triggerKeywords = ['@dt helper', 'dt helper']; // ทั้งหมดใช้ lowercase
+    const lowerCaseMessage = userMessage.toLowerCase();
+    const isTrigger = triggerKeywords.some(keyword => lowerCaseMessage.includes(keyword));
+    
+    if (isTrigger && lastImageMessageId) {
+      console.log('📝 DT Helper trigger detected, start OCR on last image...');
       const stream = await client.getMessageContent(lastImageMessageId);
       const chunks = [];
       stream.on('data', (chunk) => chunks.push(chunk));
-
+    
       const imageBuffer = await new Promise((resolve, reject) => {
         stream.on('end', () => resolve(Buffer.concat(chunks)));
         stream.on('error', reject);
       });
-
+    
       const [result] = await visionClient.textDetection({ image: { content: imageBuffer } });
       const detections = result.textAnnotations;
       const text = detections.length > 0 ? detections[0].description : '❌ ไม่พบข้อความในภาพ';
-
+    
       console.log('📝 OCR Result:', text);
-      lastImageMessageId = null; // เคลียร์หลังอ่านจบ
-
+      lastImageMessageId = null;
+    
       return client.replyMessage(event.replyToken, {
         type: 'text',
-        text: `✅ ข้อความในภาพ:\n${text}`
+        text: `🤖 DT Helper อ่านให้แล้วครับ:\n\n${text}`
       });
     }
-
-    // ✅ Text ที่ไม่ใช่ OCR ก็ส่งไปหา GPT ได้ตามปกติ
-    if (userMessage.includes('@DT-bot')) {
-      const prompt = userMessage.replace('@DT-bot', '').trim();
+    
+    // ✅ กรณีไม่มีรูป แต่เป็นข้อความที่สั่ง DT Helper ให้ตอบด้วย GPT
+    if (isTrigger) {
+      const prompt = triggerKeywords.reduce((msg, keyword) => msg.replace(new RegExp(keyword, 'gi'), ''), userMessage).trim();
       const aiReply = await getGPTResponse(prompt);
       return client.replyMessage(event.replyToken, {
         type: 'text',
         text: aiReply
       });
-    }
+    } 
   }
 }
 
