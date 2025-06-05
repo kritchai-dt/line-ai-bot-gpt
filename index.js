@@ -105,41 +105,39 @@ async function handleEvent(event) {
 if (isTrigger) {
   const prompt = triggerKeywords.reduce((msg, keyword) => msg.replace(new RegExp(keyword, 'gi'), ''), userMessage).trim();
 
-  // ✅ ส่ง Flex Message Typing Indicator ก่อน (แบบ "จุดสามจุดกระพริบ")
+  // 🔹 เรียก Flex Typing Indicator ก่อน
   await client.replyMessage(event.replyToken, {
-    type: "flex",
-    altText: "กำลังตอบกลับ...",
-    contents: {
-      type: "bubble",
-      size: "nano",
-      body: {
-        type: "box",
-        layout: "horizontal",
-        spacing: "sm",
-        contents: [
-          {
-            type: "image",
-            url: "https://i.imgur.com/Wb1kS8h.gif", // ✅ หรือเปลี่ยนเป็น animation ของคุณเอง
-            size: "xxs",
-            aspectRatio: "1:1"
-          },
-          {
-            type: "text",
-            text: "กำลังพิมพ์...",
-            size: "xs",
-            weight: "regular",
-            color: "#AAAAAA"
-          }
-        ]
-      }
+  "type": "flex",
+  "altText": "Typing...",
+  "contents": {
+    "type": "bubble",
+    "size": "micro",
+    "body": {
+      "type": "box",
+      "layout": "vertical",
+      "contents": [
+        {
+          "type": "text",
+          "text": "● ● ●",
+          "align": "center",
+          "gravity": "center",
+          "color": "#BBBBBB",
+          "size": "lg"
+        }
+      ]
     }
-  });
+  }
+}
+  );
 
-  // ✅ ดึงข้อมูลจาก GPT
+  // 🔹 delay เล็กน้อย (1.5 วินาที)
+  await new Promise(resolve => setTimeout(resolve, 1500));
+
+  // 🔹 ดึงคำตอบจาก GPT
   const aiReply = await getGPTResponse(prompt);
 
-  // ✅ ส่ง Push Message คำตอบจริง (ไม่ใช้ reply ซ้ำ)
-  return client.pushMessage(event.source.userId, {
+  // 🔹 ตอบกลับด้วย replyMessage อีกรอบโดยใช้ push ไปยัง group
+  return client.pushMessage(event.source.groupId, {
     type: 'text',
     text: aiReply
   });
