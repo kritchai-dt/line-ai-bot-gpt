@@ -102,14 +102,48 @@ async function handleEvent(event) {
     }
 
     // ✅ ตอบ GPT
-    if (isTrigger) {
-      const prompt = triggerKeywords.reduce((msg, keyword) => msg.replace(new RegExp(keyword, 'gi'), ''), userMessage).trim();
-      const aiReply = await getGPTResponse(prompt);
-      return client.replyMessage(event.replyToken, {
-        type: 'text',
-        text: aiReply
-      });
+if (isTrigger) {
+  const prompt = triggerKeywords.reduce((msg, keyword) => msg.replace(new RegExp(keyword, 'gi'), ''), userMessage).trim();
+
+  // ✅ ส่ง Flex Message Typing Indicator ก่อน (แบบ "จุดสามจุดกระพริบ")
+  await client.replyMessage(event.replyToken, {
+    type: "flex",
+    altText: "กำลังตอบกลับ...",
+    contents: {
+      type: "bubble",
+      size: "nano",
+      body: {
+        type: "box",
+        layout: "horizontal",
+        spacing: "sm",
+        contents: [
+          {
+            type: "image",
+            url: "https://i.imgur.com/Wb1kS8h.gif", // ✅ หรือเปลี่ยนเป็น animation ของคุณเอง
+            size: "xxs",
+            aspectRatio: "1:1"
+          },
+          {
+            type: "text",
+            text: "กำลังพิมพ์...",
+            size: "xs",
+            weight: "regular",
+            color: "#AAAAAA"
+          }
+        ]
+      }
     }
+  });
+
+  // ✅ ดึงข้อมูลจาก GPT
+  const aiReply = await getGPTResponse(prompt);
+
+  // ✅ ส่ง Push Message คำตอบจริง (ไม่ใช้ reply ซ้ำ)
+  return client.pushMessage(event.source.userId, {
+    type: 'text',
+    text: aiReply
+  });
+}
   }
 }
 
@@ -120,9 +154,9 @@ async function checkPaymentStatus(paymentAttemptId) {
     // ✅ ในกรณีนี้เราจำลองว่า charge_id กับ paymentAttemptId เป็น mapping ที่รู้กัน
     // ถ้ามีระบบหลังบ้านจริง คุณควร fetch จาก Database หรือ API ของคุณเอง
     const chargeIdMap = {
-      "774518": "chrg_test_633qnxoq4tsp8la6mpy",
-      "489767": "chrg_test_60tizjzvq9y685jcxkt",
-      "818471": "chrg_test_63busw01lwtq7myho4x" // ตัวอย่างจำลอง
+      "774518": "chrg_test_633qnxoq4tsp8la6mpy", // ตัวอย่างจำลอง success case
+      "489767": "chrg_test_60tizjzvq9y685jcxkt", // ตัวอย่างจำลอง success case
+      "818471": "chrg_test_63busw01lwtq7myho4x" // ตัวอย่างจำลอง fail case
     };
 
     const chargeId = chargeIdMap[paymentAttemptId];
