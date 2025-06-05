@@ -115,16 +115,22 @@ if (isTrigger) {
     "body": {
       "type": "box",
       "layout": "vertical",
+      "justifyContent": "center",
+      "alignItems": "center",
       "contents": [
         {
-          "type": "text",
-          "text": "● ● ●",
-          "align": "center",
-          "gravity": "center",
-          "color": "#BBBBBB",
-          "size": "lg"
+          "type": "image",
+          "url": "https://i.imgur.com/XqQ7v5y.gif",
+          "size": "50px",
+          "aspectRatio": "1:1",
+          "aspectMode": "fit"
         }
       ]
+    },
+    "styles": {
+      "body": {
+        "backgroundColor": "#00000000"  // ✅ โปร่งใส
+      }
     }
   }
 }
