@@ -3,16 +3,11 @@ const express = require('express');
 const line = require('@line/bot-sdk');
 const axios = require('axios');
 
-
-// ✅ Import Google Cloud Vision (ใส่ตรงนี้)
+// Google Cloud Vision
 const vision = require('@google-cloud/vision');
 const visionClient = new vision.ImageAnnotatorClient({
   credentials: JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON)
 });
-
-console.log('LINE_CHANNEL_ACCESS_TOKEN:', process.env.LINE_CHANNEL_ACCESS_TOKEN);
-console.log('LINE_CHANNEL_SECRET:', process.env.LINE_CHANNEL_SECRET);
-console.log('OPENAI_API_KEY:', process.env.OPENAI_API_KEY);
 
 const app = express();
 
@@ -23,10 +18,43 @@ const config = {
 
 const client = new line.Client(config);
 
-// ✅ Webhook route ตรงนี้สำคัญมาก
+// -------- Utils: ส่งข้อความแบบปลอดภัย + ช่วยจัดการ source --------
+function getSourceKey(source) {
+  if (!source) return 'unknown';
+  if (source.type === 'group') return `group:${source.groupId}`;
+  if (source.type === 'room')  return `room:${source.roomId}`;
+  return `user:${source.userId}`;
+}
+
+function getTargetId(source) {
+  if (!source) return null;
+  return source.groupId || source.roomId || source.userId || null;
+}
+
+async function safeReply(replyToken, messages) {
+  try {
+    await client.replyMessage(replyToken, Array.isArray(messages) ? messages : [messages]);
+  } catch (err) {
+    console.error('Reply Error:', err.response?.data || err.message);
+  }
+}
+
+async function safePush(source, messages) {
+  const targetId = getTargetId(source);
+  if (!targetId) {
+    console.error('Push Error: No targetId for source', source);
+    return;
+  }
+  try {
+    await client.pushMessage(targetId, Array.isArray(messages) ? messages : [messages]);
+  } catch (err) {
+    console.error('Push Error:', { targetId }, err.response?.data || err.message);
+  }
+}
+
+// -------- Webhook (สำคัญ) --------
 app.post('/webhook', line.middleware(config), async (req, res) => {
   try {
-    console.log('LINE Webhook Received:', req.body.events);
     await Promise.all(req.body.events.map(handleEvent));
     res.status(200).end();
   } catch (err) {
@@ -35,132 +63,128 @@ app.post('/webhook', line.middleware(config), async (req, res) => {
   }
 });
 
-// ✅ ส่วนนี้ใช้ json ได้เฉพาะ route อื่น
+// ใช้ JSON ได้เฉพาะ route อื่น
 app.use(express.json());
 
-// เก็บรูปก่อนหน้าแบบ simple (Production ใช้ Redis/Database)
-let lastImageMessageId = null;
+// เก็บรูป “รายห้อง/รายคน” แทนตัวแปรเดียว
+// key = `${source.type}:${id}` -> value = last image messageId
+const lastImageBySource = new Map();
 
 async function handleEvent(event) {
   if (event.type !== 'message') return;
 
-  if (event.message.type === 'image') {
-    console.log('📸 Image received');
-    lastImageMessageId = event.message.id;
+  const { source, message, replyToken } = event;
+  const skey = getSourceKey(source);
+
+  // -------- ถ้าเป็นรูป: เก็บ messageId ตามห้อง/คน --------
+  if (message.type === 'image') {
+    lastImageBySource.set(skey, message.id);
     return;
   }
 
-  if (event.message.type === 'text') {
-    const userMessage = event.message.text;
+  // -------- ถ้าเป็นข้อความ --------
+  if (message.type === 'text') {
+    const userMessage = message.text || '';
+    const lower = userMessage.toLowerCase();
     const triggerKeywords = ['@dt helper', 'dt helper'];
-    const lowerCaseMessage = userMessage.toLowerCase();
-    const isTrigger = triggerKeywords.some(keyword => lowerCaseMessage.includes(keyword));
+    const isTrigger = triggerKeywords.some(k => lower.includes(k));
 
-    // ✅ ตรวจสอบสถานะการชำระเงิน
-    if (userMessage.toLowerCase().includes('ตรวจสอบการชำระเงิน')) {
+    // A) ตรวจสอบการชำระเงิน
+    if (lower.includes('ตรวจสอบการชำระเงิน')) {
       const match = userMessage.match(/\d{5,}/);
-
       if (!match) {
-        return client.replyMessage(event.replyToken, {
+        return safeReply(replyToken, {
           type: 'text',
           text: 'กรุณาระบุหมายเลขการชำระเงิน เช่น: ตรวจสอบการชำระเงิน 574981'
         });
       }
-
       const paymentAttemptId = match[0];
       const result = await checkPaymentStatus(paymentAttemptId);
-
-      return client.replyMessage(event.replyToken, {
-        type: 'text',
-        text: result.message
-      });
+      return safeReply(replyToken, { type: 'text', text: result.message });
     }
 
-    // ✅ OCR รูป
-    if (isTrigger && lastImageMessageId) {
-      console.log('📝 DT Helper trigger detected, start OCR on last image...');
-      const stream = await client.getMessageContent(lastImageMessageId);
-      const chunks = [];
-      stream.on('data', (chunk) => chunks.push(chunk));
+    // B) OCR รูปล่าสุดใน “ห้อง/คน” เดียวกัน
+    if (isTrigger) {
+      // ตัดคำ trigger ออก
+      const prompt = triggerKeywords
+        .reduce((msg, k) => msg.replace(new RegExp(k, 'gi'), ''), userMessage)
+        .trim();
 
-      const imageBuffer = await new Promise((resolve, reject) => {
-        stream.on('end', () => resolve(Buffer.concat(chunks)));
-        stream.on('error', reject);
-      });
+      // ถ้ามีรูปค้างอยู่ ให้ทำ OCR ก่อน
+      const lastImgId = lastImageBySource.get(skey);
+      if (lastImgId) {
+        try {
+          const stream = await client.getMessageContent(lastImgId);
+          const chunks = [];
+          stream.on('data', (c) => chunks.push(c));
+          const imageBuffer = await new Promise((resolve, reject) => {
+            stream.on('end', () => resolve(Buffer.concat(chunks)));
+            stream.on('error', reject);
+          });
 
-      const [result] = await visionClient.textDetection({ image: { content: imageBuffer } });
-      const detections = result.textAnnotations;
-      const text = detections.length > 0 ? detections[0].description : '❌ ไม่พบข้อความในภาพ';
+          const [visionRes] = await visionClient.textDetection({ image: { content: imageBuffer } });
+          const detections = visionRes.textAnnotations;
+          const text = detections.length > 0 ? detections[0].description : '❌ ไม่พบข้อความในภาพ';
 
-      console.log('📝 OCR Result:', text);
-      lastImageMessageId = null;
+          // เคลียร์รูปค้างของห้อง/คนนี้
+          lastImageBySource.delete(skey);
 
-      return client.replyMessage(event.replyToken, {
-        type: 'text',
-        text: `🤖 DT Helper อ่านให้แล้วครับ:\n\n${text}`
-      });
-    }
-
-    // ✅ ตอบ GPT
-if (isTrigger) {
-  const prompt = triggerKeywords.reduce((msg, keyword) => msg.replace(new RegExp(keyword, 'gi'), ''), userMessage).trim();
-
-  // 🔹 เรียก Flex Typing Indicator ก่อน
-  await client.replyMessage(event.replyToken, {
-  "type": "flex",
-  "altText": "Typing...",
-  "contents": {
-    "type": "bubble",
-    "size": "micro",
-    "body": {
-      "type": "box",
-      "layout": "vertical",
-      "justifyContent": "center",
-      "alignItems": "center",
-      "contents": [
-        {
-          "type": "image",
-          "url": "https://i.imgur.com/XqQ7v5y.gif",
-          "size": "50px",
-          "aspectRatio": "1:1",
-          "aspectMode": "fit"
+          await safeReply(replyToken, {
+            type: 'text',
+            text: `🤖 DT Helper อ่านให้แล้วครับ:\n\n${text}`
+          });
+        } catch (err) {
+          console.error('OCR Error:', err.response?.data || err.message);
+          await safeReply(replyToken, { type: 'text', text: 'ขออภัย อ่านรูปไม่ได้ครับ' });
         }
-      ]
-    },
-    "styles": {
-      "body": {
-        "backgroundColor": "#00000000"  // ✅ โปร่งใส
+      } else {
+        // ไม่มีรูปค้าง ก็แสดง typing ก่อนตอบ AI
+        await safeReply(replyToken, {
+          type: 'flex',
+          altText: 'Typing...',
+          contents: {
+            type: 'bubble',
+            size: 'micro',
+            body: {
+              type: 'box',
+              layout: 'vertical',
+              justifyContent: 'center',
+              alignItems: 'center',
+              contents: [
+                {
+                  type: 'image',
+                  url: 'https://i.imgur.com/XqQ7v5y.gif',
+                  size: '50px',
+                  aspectRatio: '1:1',
+                  aspectMode: 'fit'
+                }
+              ]
+            },
+            styles: { body: { backgroundColor: '#00000000' } }
+          }
+        });
       }
+
+      // หน่วงสั้น ๆ เพื่อ UX
+      await new Promise(r => setTimeout(r, 1500));
+
+      // เรียก GPT
+      const aiReply = await getGPTResponse(prompt);
+
+      // ส่งคำตอบกลับไปยังปลายทางที่ถูกต้อง (user / room / group)
+      return safePush(source, { type: 'text', text: aiReply });
     }
-  }
-}
-  );
-
-  // 🔹 delay เล็กน้อย (1.5 วินาที)
-  await new Promise(resolve => setTimeout(resolve, 1500));
-
-  // 🔹 ดึงคำตอบจาก GPT
-  const aiReply = await getGPTResponse(prompt);
-
-  // 🔹 ตอบกลับด้วย replyMessage อีกรอบโดยใช้ push ไปยัง group
-  return client.pushMessage(event.source.groupId, {
-    type: 'text',
-    text: aiReply
-  });
-}
   }
 }
 
 async function checkPaymentStatus(paymentAttemptId) {
   const omiseKey = process.env.OMISE_SECRET_KEY;
-
   try {
-    // ✅ ในกรณีนี้เราจำลองว่า charge_id กับ paymentAttemptId เป็น mapping ที่รู้กัน
-    // ถ้ามีระบบหลังบ้านจริง คุณควร fetch จาก Database หรือ API ของคุณเอง
+    // ตัวอย่าง mapping (ควรแทนที่ด้วยข้อมูลจริงจากระบบหลังบ้าน)
     const chargeIdMap = {
-      "774518": "chrg_test_633qnxoq4tsp8la6mpy", // ตัวอย่างจำลอง success case
-      "489767": "chrg_test_60tizjzvq9y685jcxkt", // ตัวอย่างจำลอง success case
-      "818471": "chrg_test_63busw01lwtq7myho4x" // ตัวอย่างจำลอง fail case
+      "774518": "chrg_test_633qnxoq4tsp8la6mpy",
+      "489767": "chrg_test_60tizjzvq9y685jcxkt",
+      "818471": "chrg_test_63busw01lwtq7myho4x"
     };
 
     const chargeId = chargeIdMap[paymentAttemptId];
@@ -168,12 +192,8 @@ async function checkPaymentStatus(paymentAttemptId) {
       return { found: false, message: `ไม่พบข้อมูลการชำระเงินหมายเลข ${paymentAttemptId}` };
     }
 
-    // ✅ เรียก Omise API
     const response = await axios.get(`https://api.omise.co/charges/${chargeId}`, {
-      auth: {
-        username: omiseKey,
-        password: ''
-      }
+      auth: { username: omiseKey, password: '' }
     });
 
     const charge = response.data;
@@ -181,36 +201,24 @@ async function checkPaymentStatus(paymentAttemptId) {
     const result = charge.metadata?.x_result;
 
     if (status !== 'successful' || result !== 'successful') {
-      return {
-        found: true,
-        message: `❌ การชำระเงินหมายเลข ${paymentAttemptId} ไม่สำเร็จ\nสถานะล่าสุด: ${status}`
-      };
+      return { found: true, message: `❌ การชำระเงินหมายเลข ${paymentAttemptId} ไม่สำเร็จ\nสถานะล่าสุด: ${status}` };
     }
-
-    return {
-      found: true,
-      message: `✅ การชำระเงินหมายเลข ${paymentAttemptId} สำเร็จเรียบร้อยครับ\nสถานะล่าสุด: ${status}`
-    };
-
+    return { found: true, message: `✅ การชำระเงินหมายเลข ${paymentAttemptId} สำเร็จเรียบร้อยครับ\nสถานะล่าสุด: ${status}` };
   } catch (error) {
-    console.error("Omise API Error:", error);
-    return {
-      found: false,
-      message: "⚠️ ไม่สามารถเชื่อมต่อกับระบบ Omise ได้ กรุณาลองใหม่อีกครั้ง"
-    };
+    console.error('Omise API Error:', error.response?.data || error.message);
+    return { found: false, message: '⚠️ ไม่สามารถเชื่อมต่อกับระบบ Omise ได้ กรุณาลองใหม่อีกครั้ง' };
   }
 }
 
 async function getGPTResponse(prompt) {
-  console.log('✅ ENV OPENAI_API_KEY:', process.env.OPENAI_API_KEY); 
   try {
     const response = await axios.post('https://api.openai.com/v1/chat/completions', {
       model: 'gpt-4o',
       messages: [{ role: 'user', content: prompt }],
-      max_tokens: 500,
+      max_tokens: 500
     }, {
       headers: {
-        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
         'Content-Type': 'application/json'
       }
     });
