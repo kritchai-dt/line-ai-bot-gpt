@@ -52,6 +52,11 @@ async function safePush(source, messages) {
   }
 }
 
+// helper: ส่ง "กำลังพิมพ์…" (ตัวอักษร) แทน GIF
+async function sendTypingHint(replyToken) {
+  await safeReply(replyToken, { type: 'text', text: 'กำลังคิดคำตอบ…' });
+}
+
 // -------- Webhook (สำคัญ) --------
 app.post('/webhook', line.middleware(config), async (req, res) => {
   try {
@@ -66,7 +71,7 @@ app.post('/webhook', line.middleware(config), async (req, res) => {
 // ใช้ JSON ได้เฉพาะ route อื่น
 app.use(express.json());
 
-// เก็บรูป “รายห้อง/รายคน” แทนตัวแปรเดียว
+// เก็บรูป “รายห้อง/รายคน”
 // key = `${source.type}:${id}` -> value = last image messageId
 const lastImageBySource = new Map();
 
@@ -103,7 +108,7 @@ async function handleEvent(event) {
       return safeReply(replyToken, { type: 'text', text: result.message });
     }
 
-    // B) OCR รูปล่าสุดใน “ห้อง/คน” เดียวกัน
+    // B) OCR + GPT เมื่อมี trigger
     if (isTrigger) {
       // ตัดคำ trigger ออก
       const prompt = triggerKeywords
@@ -138,20 +143,15 @@ async function handleEvent(event) {
           await safeReply(replyToken, { type: 'text', text: 'ขออภัย อ่านรูปไม่ได้ครับ' });
         }
       } else {
-        
-      // helper ส่ง "กำลังพิมพ์…"
-      async function sendTypingHint(replyToken)
-      {
-        await safeReply(replyToken, { type: 'text', text: 'กำลังคิดคำตอบ…' });
+        // ไม่มีรูปค้าง: ส่งสัญญาณกำลังพิมพ์
+        await sendTypingHint(replyToken);
       }
 
       // หน่วงสั้น ๆ เพื่อ UX
       await new Promise(r => setTimeout(r, 1500));
 
-      // เรียก GPT
+      // เรียก GPT และส่งกลับยังปลายทางที่ถูกต้อง (user / room / group)
       const aiReply = await getGPTResponse(prompt);
-
-      // ส่งคำตอบกลับไปยังปลายทางที่ถูกต้อง (user / room / group)
       return safePush(source, { type: 'text', text: aiReply });
     }
   }
