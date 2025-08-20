@@ -92,48 +92,48 @@ if (message.type === 'text') {
   const userMessage = message.text || '';
   const triggerKeywords = ['@dt helper', 'dt helper'];
 
-  // 1) ตัด trigger ออกก่อน เพื่อกัน regex สะดุด
+  // 1) ตรวจว่าเป็นแชท 1:1 ไหม
+  const isDirect = (event.source?.type === 'user');
+
+  // 2) ตรวจ trigger เฉพาะข้อความดิบ (ก่อนตัด)
+  const rawLower = userMessage.toLowerCase();
+  const hasTrigger = triggerKeywords.some(k => rawLower.includes(k));
+
+  // 3) ตัด trigger ออกไว้ใช้ต่อ (กันไปรบกวน regex/AI)
   const cleaned = triggerKeywords
     .reduce((msg, k) => msg.replace(new RegExp(k, 'gi'), ''), userMessage)
     .trim();
 
-  const lower = cleaned.toLowerCase();
-  const isTrigger = triggerKeywords.some(k => (message.text || '').toLowerCase().includes(k));
-
-  // 2) ตรวจ intent "ชำระเงิน" ให้ครอบคลุมหลายวิธีเขียน + เผื่อมีคำอื่นคั่น
+  // 4) ใช้ intent ตรวจ “ชำระเงิน” เหมือนเดิม แต่ตรวจจาก cleaned
   const PAYMENT_PATTERNS = [
-    /ตรวจ(สอบ)?(.{0,8})?(รายการ)?(.{0,8})?(การ)?(.{0,8})?ชำระ(เงิน)?/i,  // ไทย ยอมให้มีตัวอักษรคั่นบ้าง
+    /ตรวจ(สอบ)?(.{0,8})?(รายการ)?(.{0,8})?(การ)?(.{0,8})?ชำระ(เงิน)?/i,
     /(เช็ค|เช็ก)(.{0,8})?ชำระ/i,
     /\b(check|verify)\b.{0,12}\b(payment|charge|transaction|status)\b/i,
     /payment\s*status/i
   ];
   const hasPaymentIntent = PAYMENT_PATTERNS.some(p => p.test(cleaned));
-
-  // 3) หาเลขอ้างอิง (อย่างน้อย 5 หลัก) จากข้อความที่ถูกตัด trigger แล้ว
   const idMatch = cleaned.match(/\d{5,}/);
 
-  // (optional) log ดีบักแบบไม่หลุดความลับ
-  console.log('[INTENT]', { hasPaymentIntent, withTrigger: isTrigger, hasId: !!idMatch });
-
-  // A) ตรวจสอบการชำระเงิน (ให้ทำก่อน GPT เสมอ)
+  // A) ตรวจการชำระเงิน (ก่อนเสมอ)
   if (hasPaymentIntent) {
     if (!idMatch) {
-      return safeReply(replyToken, {
-        type: 'text',
-        text: 'กรุณาระบุหมายเลขการชำระเงิน เช่น: ตรวจสอบการชำระเงิน 574981'
-      });
+      return safeReply(replyToken, { type: 'text',
+        text: 'กรุณาระบุหมายเลขการชำระเงิน เช่น: ตรวจสอบการชำระเงิน 574981' });
     }
     const paymentAttemptId = idMatch[0];
     const result = await checkPaymentStatus(paymentAttemptId);
     return safeReply(replyToken, { type: 'text', text: result.message });
   }
 
-  // B) OCR + GPT เมื่อมี trigger
-  if (isTrigger) {
-    const prompt = cleaned; // หลังตัด trigger แล้วใช้เป็น prompt ได้ตรง ๆ
+  // B) ตัดสินใจไปทาง AI
+  //    - แชท 1:1 ตอบทุกข้อความ (ไม่ต้องมี trigger)
+  //    - กลุ่ม/รูม ต้องมี trigger
+  const shouldAskAI = isDirect || hasTrigger;
+  if (shouldAskAI) {
+    const prompt = hasTrigger ? cleaned : userMessage; // 1:1 ใช้ข้อความเต็ม
 
-    // ถ้ามีรูปค้างอยู่ ให้ทำ OCR ก่อน
-    const skey = getSourceKey(source);
+    // มีรูปค้างอยู่? ทำ OCR ก่อนเหมือนเดิม
+    const skey = getSourceKey(event.source);
     const lastImgId = lastImageBySource.get(skey);
     if (lastImgId) {
       try {
@@ -144,33 +144,23 @@ if (message.type === 'text') {
           stream.on('end', () => resolve(Buffer.concat(chunks)));
           stream.on('error', reject);
         });
-
         const [visionRes] = await visionClient.textDetection({ image: { content: imageBuffer } });
         const detections = visionRes.textAnnotations;
         const text = detections.length > 0 ? detections[0].description : '❌ ไม่พบข้อความในภาพ';
-
-        // เคลียร์รูปค้างของห้อง/คนนี้
         lastImageBySource.delete(skey);
-
-        await safeReply(replyToken, {
-          type: 'text',
-          text: `🤖 DT Helper อ่านให้แล้วครับ:\n\n${text}`
-        });
+        await safeReply(replyToken, { type: 'text', text: `🤖 DT Helper อ่านให้แล้วครับ:\n\n${text}` });
       } catch (err) {
         console.error('OCR Error:', err.response?.data || err.message);
         await safeReply(replyToken, { type: 'text', text: 'ขออภัย อ่านรูปไม่ได้ครับ' });
       }
     } else {
-      // ไม่มีรูปค้าง: ส่งสัญญาณกำลังพิมพ์
       await sendTypingHint(replyToken);
     }
 
-    // หน่วงสั้น ๆ เพื่อ UX
     await new Promise(r => setTimeout(r, 1200));
 
-    // เรียก GPT และส่งกลับยังปลายทางที่ถูกต้อง (user / room / group)
     const aiReply = await getGPTResponse(prompt);
-    return safePush(source, { type: 'text', text: aiReply });
+    return safePush(event.source, { type: 'text', text: aiReply });
   }
 }
 }
