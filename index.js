@@ -94,16 +94,29 @@ async function handleEvent(event) {
     const triggerKeywords = ['@dt helper', 'dt helper'];
     const isTrigger = triggerKeywords.some(k => lower.includes(k));
 
-    // A) ตรวจสอบการชำระเงิน
-    if (lower.includes('ตรวจสอบการชำระเงิน')) {
-      const match = userMessage.match(/\d{5,}/);
-      if (!match) {
+    // --- NEW: เงื่อนไขตรวจ "การชำระเงิน" แบบครอบคลุมหลายคำพูด ---
+    const PAYMENT_PATTERNS = [
+      /ตรวจ(สอบ)?(รายการ)?การ?ชำระ(เงิน)?/i,             // ไทยหลายรูปแบบ
+      /\b(check|verify)\b.*\b(payment|charge|transaction)\b/i, // อังกฤษพื้นฐาน
+      /payment\s*status/i
+    ];
+    const hasPaymentIntent = PAYMENT_PATTERNS.some(p => p.test(userMessage));
+
+    // A) ตรวจสอบการชำระเงิน (ทำก่อนเสมอ—even if has trigger)
+    if (hasPaymentIntent) {
+      // ตัด trigger ออกก่อนหาเลข (กัน @dt helper ไปกวน regex)
+      const cleaned = triggerKeywords
+        .reduce((msg, k) => msg.replace(new RegExp(k, 'gi'), ''), userMessage)
+        .trim();
+
+      const idMatch = cleaned.match(/\d{5,}/);
+      if (!idMatch) {
         return safeReply(replyToken, {
           type: 'text',
           text: 'กรุณาระบุหมายเลขการชำระเงิน เช่น: ตรวจสอบการชำระเงิน 574981'
         });
       }
-      const paymentAttemptId = match[0];
+      const paymentAttemptId = idMatch[0];
       const result = await checkPaymentStatus(paymentAttemptId);
       return safeReply(replyToken, { type: 'text', text: result.message });
     }
