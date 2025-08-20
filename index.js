@@ -138,31 +138,11 @@ async function handleEvent(event) {
           await safeReply(replyToken, { type: 'text', text: 'ขออภัย อ่านรูปไม่ได้ครับ' });
         }
       } else {
-        // ไม่มีรูปค้าง ก็แสดง typing ก่อนตอบ AI
-        await safeReply(replyToken, {
-          type: 'flex',
-          altText: 'Typing...',
-          contents: {
-            type: 'bubble',
-            size: 'micro',
-            body: {
-              type: 'box',
-              layout: 'vertical',
-              justifyContent: 'center',
-              alignItems: 'center',
-              contents: [
-                {
-                  type: 'image',
-                  url: 'https://i.imgur.com/XqQ7v5y.gif',
-                  size: '50px',
-                  aspectRatio: '1:1',
-                  aspectMode: 'fit'
-                }
-              ]
-            },
-            styles: { body: { backgroundColor: '#00000000' } }
-          }
-        });
+        
+      // helper ส่ง "กำลังพิมพ์…"
+      async function sendTypingHint(replyToken)
+      {
+        await safeReply(replyToken, { type: 'text', text: 'กำลังคิดคำตอบ…' });
       }
 
       // หน่วงสั้น ๆ เพื่อ UX
