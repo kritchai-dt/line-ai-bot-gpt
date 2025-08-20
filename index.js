@@ -87,87 +87,92 @@ async function handleEvent(event) {
     return;
   }
 
-  // -------- ถ้าเป็นข้อความ --------
-  if (message.type === 'text') {
-    const userMessage = message.text || '';
-    const lower = userMessage.toLowerCase();
-    const triggerKeywords = ['@dt helper', 'dt helper'];
-    const isTrigger = triggerKeywords.some(k => lower.includes(k));
+// -------- ถ้าเป็นข้อความ --------
+if (message.type === 'text') {
+  const userMessage = message.text || '';
+  const triggerKeywords = ['@dt helper', 'dt helper'];
 
-    // --- NEW: เงื่อนไขตรวจ "การชำระเงิน" แบบครอบคลุมหลายคำพูด ---
-    const PAYMENT_PATTERNS = [
-      /ตรวจ(สอบ)?(รายการ)?การ?ชำระ(เงิน)?/i,             // ไทยหลายรูปแบบ
-      /\b(check|verify)\b.*\b(payment|charge|transaction)\b/i, // อังกฤษพื้นฐาน
-      /payment\s*status/i
-    ];
-    const hasPaymentIntent = PAYMENT_PATTERNS.some(p => p.test(userMessage));
+  // 1) ตัด trigger ออกก่อน เพื่อกัน regex สะดุด
+  const cleaned = triggerKeywords
+    .reduce((msg, k) => msg.replace(new RegExp(k, 'gi'), ''), userMessage)
+    .trim();
 
-    // A) ตรวจสอบการชำระเงิน (ทำก่อนเสมอ—even if has trigger)
-    if (hasPaymentIntent) {
-      // ตัด trigger ออกก่อนหาเลข (กัน @dt helper ไปกวน regex)
-      const cleaned = triggerKeywords
-        .reduce((msg, k) => msg.replace(new RegExp(k, 'gi'), ''), userMessage)
-        .trim();
+  const lower = cleaned.toLowerCase();
+  const isTrigger = triggerKeywords.some(k => (message.text || '').toLowerCase().includes(k));
 
-      const idMatch = cleaned.match(/\d{5,}/);
-      if (!idMatch) {
-        return safeReply(replyToken, {
-          type: 'text',
-          text: 'กรุณาระบุหมายเลขการชำระเงิน เช่น: ตรวจสอบการชำระเงิน 574981'
-        });
-      }
-      const paymentAttemptId = idMatch[0];
-      const result = await checkPaymentStatus(paymentAttemptId);
-      return safeReply(replyToken, { type: 'text', text: result.message });
+  // 2) ตรวจ intent "ชำระเงิน" ให้ครอบคลุมหลายวิธีเขียน + เผื่อมีคำอื่นคั่น
+  const PAYMENT_PATTERNS = [
+    /ตรวจ(สอบ)?(.{0,8})?(รายการ)?(.{0,8})?(การ)?(.{0,8})?ชำระ(เงิน)?/i,  // ไทย ยอมให้มีตัวอักษรคั่นบ้าง
+    /(เช็ค|เช็ก)(.{0,8})?ชำระ/i,
+    /\b(check|verify)\b.{0,12}\b(payment|charge|transaction|status)\b/i,
+    /payment\s*status/i
+  ];
+  const hasPaymentIntent = PAYMENT_PATTERNS.some(p => p.test(cleaned));
+
+  // 3) หาเลขอ้างอิง (อย่างน้อย 5 หลัก) จากข้อความที่ถูกตัด trigger แล้ว
+  const idMatch = cleaned.match(/\d{5,}/);
+
+  // (optional) log ดีบักแบบไม่หลุดความลับ
+  console.log('[INTENT]', { hasPaymentIntent, withTrigger: isTrigger, hasId: !!idMatch });
+
+  // A) ตรวจสอบการชำระเงิน (ให้ทำก่อน GPT เสมอ)
+  if (hasPaymentIntent) {
+    if (!idMatch) {
+      return safeReply(replyToken, {
+        type: 'text',
+        text: 'กรุณาระบุหมายเลขการชำระเงิน เช่น: ตรวจสอบการชำระเงิน 574981'
+      });
     }
-
-    // B) OCR + GPT เมื่อมี trigger
-    if (isTrigger) {
-      // ตัดคำ trigger ออก
-      const prompt = triggerKeywords
-        .reduce((msg, k) => msg.replace(new RegExp(k, 'gi'), ''), userMessage)
-        .trim();
-
-      // ถ้ามีรูปค้างอยู่ ให้ทำ OCR ก่อน
-      const lastImgId = lastImageBySource.get(skey);
-      if (lastImgId) {
-        try {
-          const stream = await client.getMessageContent(lastImgId);
-          const chunks = [];
-          stream.on('data', (c) => chunks.push(c));
-          const imageBuffer = await new Promise((resolve, reject) => {
-            stream.on('end', () => resolve(Buffer.concat(chunks)));
-            stream.on('error', reject);
-          });
-
-          const [visionRes] = await visionClient.textDetection({ image: { content: imageBuffer } });
-          const detections = visionRes.textAnnotations;
-          const text = detections.length > 0 ? detections[0].description : '❌ ไม่พบข้อความในภาพ';
-
-          // เคลียร์รูปค้างของห้อง/คนนี้
-          lastImageBySource.delete(skey);
-
-          await safeReply(replyToken, {
-            type: 'text',
-            text: `🤖 DT Helper อ่านให้แล้วครับ:\n\n${text}`
-          });
-        } catch (err) {
-          console.error('OCR Error:', err.response?.data || err.message);
-          await safeReply(replyToken, { type: 'text', text: 'ขออภัย อ่านรูปไม่ได้ครับ' });
-        }
-      } else {
-        // ไม่มีรูปค้าง: ส่งสัญญาณกำลังพิมพ์
-        await sendTypingHint(replyToken);
-      }
-
-      // หน่วงสั้น ๆ เพื่อ UX
-      await new Promise(r => setTimeout(r, 1500));
-
-      // เรียก GPT และส่งกลับยังปลายทางที่ถูกต้อง (user / room / group)
-      const aiReply = await getGPTResponse(prompt);
-      return safePush(source, { type: 'text', text: aiReply });
-    }
+    const paymentAttemptId = idMatch[0];
+    const result = await checkPaymentStatus(paymentAttemptId);
+    return safeReply(replyToken, { type: 'text', text: result.message });
   }
+
+  // B) OCR + GPT เมื่อมี trigger
+  if (isTrigger) {
+    const prompt = cleaned; // หลังตัด trigger แล้วใช้เป็น prompt ได้ตรง ๆ
+
+    // ถ้ามีรูปค้างอยู่ ให้ทำ OCR ก่อน
+    const skey = getSourceKey(source);
+    const lastImgId = lastImageBySource.get(skey);
+    if (lastImgId) {
+      try {
+        const stream = await client.getMessageContent(lastImgId);
+        const chunks = [];
+        stream.on('data', (c) => chunks.push(c));
+        const imageBuffer = await new Promise((resolve, reject) => {
+          stream.on('end', () => resolve(Buffer.concat(chunks)));
+          stream.on('error', reject);
+        });
+
+        const [visionRes] = await visionClient.textDetection({ image: { content: imageBuffer } });
+        const detections = visionRes.textAnnotations;
+        const text = detections.length > 0 ? detections[0].description : '❌ ไม่พบข้อความในภาพ';
+
+        // เคลียร์รูปค้างของห้อง/คนนี้
+        lastImageBySource.delete(skey);
+
+        await safeReply(replyToken, {
+          type: 'text',
+          text: `🤖 DT Helper อ่านให้แล้วครับ:\n\n${text}`
+        });
+      } catch (err) {
+        console.error('OCR Error:', err.response?.data || err.message);
+        await safeReply(replyToken, { type: 'text', text: 'ขออภัย อ่านรูปไม่ได้ครับ' });
+      }
+    } else {
+      // ไม่มีรูปค้าง: ส่งสัญญาณกำลังพิมพ์
+      await sendTypingHint(replyToken);
+    }
+
+    // หน่วงสั้น ๆ เพื่อ UX
+    await new Promise(r => setTimeout(r, 1200));
+
+    // เรียก GPT และส่งกลับยังปลายทางที่ถูกต้อง (user / room / group)
+    const aiReply = await getGPTResponse(prompt);
+    return safePush(source, { type: 'text', text: aiReply });
+  }
+}
 }
 
 async function checkPaymentStatus(paymentAttemptId) {
