@@ -23,7 +23,7 @@ const client = new line.Client(config);
 /* =========================
    1) โหลด + รีโหลดไฟล์ merchant advice (TH)
    ========================= */
-const ADVICE_PATH = path.resolve(__dirname, 'merchant_advice_th.json'); // ← ใช้ชื่อไฟล์นี้ตามที่คุณระบุ
+const ADVICE_PATH = path.join(process.cwd(), 'merchant_advice_th.json'); // ← ใช้ชื่อไฟล์นี้ตามที่คุณระบุ
 let ADVICE_MAP = {};
 
 function loadAdvice() {
