@@ -1,0 +1,13 @@
+node_modules/
+.env
+# ignore JSON ยกเว้นไฟล์ที่ระบุ
+*.json
+!merchant_advice_th.json
+coway-line-vision-key.json
+*.log
+.DS_Store
+
+echo '*.json' >> .gitignore
+echo '.env' >> .gitignore
+git add .gitignore
+git commit -m "Add .gitignore to prevent pushing secrets"
