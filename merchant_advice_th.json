@@ -1,10 +1,474 @@
 {
+  "9101": {
+    "title": "Request was declined by Issuer. In case of JCB card, it might relate to incorrect personal details. Do not retry transaction with same card. Contact Issuer for more information.",
+    "description": "คำขอถูกปฏิเสธโดยธนาคารผู้ออกบัตร (Issuer). ไม่ควรลองตัดบัตรใบเดิมซ้ำ (Do not retry with the same card). โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติม.",
+    "next_steps": [
+      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อปลดบล็อก/ขอข้อมูล",
+      "เสนอวิธีชำระเงินทางเลือก",
+      "งด retry บัตรใบเดิม",
+      "เสนอวิธีชำระเงินทางเลือก หรือเปลี่ยนบัตร",
+      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
+      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
+    ]
+  },
+  "9111": {
+    "title": "Issue linked to merchant’s MID number. This error code indicates that a MID was not found for a transaction, meaning there’s no connection between the merchant account and their payment gateway. Contact your payment processor for more information.",
+    "description": "คำอธิบายจากผู้ให้บริการ: Issue linked to merchant’s MID number. This error code indicates that a MID was not found for a transaction, meaning there’s no connection between the merchant account and their payment gateway. Contact your payment processor for more information.",
+    "next_steps": [
+      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
+      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
+      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
+    ]
+  },
+  "9103": {
+    "title": "Request was declined by Issuer. Do not retry transaction with same card. Retry with a different card or use another payment method or Contact Issuer for more information.",
+    "description": "คำขอถูกปฏิเสธโดยธนาคารผู้ออกบัตร (Issuer). ไม่ควรลองตัดบัตรใบเดิมซ้ำ (Do not retry with the same card). โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติม.",
+    "next_steps": [
+      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อปลดบล็อก/ขอข้อมูล",
+      "เสนอวิธีชำระเงินทางเลือก",
+      "งด retry บัตรใบเดิม",
+      "เสนอวิธีชำระเงินทางเลือก หรือเปลี่ยนบัตร",
+      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
+      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
+    ]
+  },
+  "9203": {
+    "title": "The card Issuer has declined the transaction because of an invalid amount or field. This response, at times, can also occur with cards that are not allowed to do online purchases. Retry with valid data or retry with a different card or use another payment method.",
+    "description": "คำขอถูกปฏิเสธโดยธนาคารผู้ออกบัตร (Issuer).",
+    "next_steps": [
+      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อปลดบล็อก/ขอข้อมูล",
+      "เสนอวิธีชำระเงินทางเลือก"
+    ]
+  },
+  "9204": {
+    "title": "The card number is not within a card number range supported by the scheme. Do not retry transaction with same card. Retry with a different card or use another payment method.",
+    "description": "ไม่ควรลองตัดบัตรใบเดิมซ้ำ (Do not retry with the same card).",
+    "next_steps": [
+      "งด retry บัตรใบเดิม",
+      "เสนอวิธีชำระเงินทางเลือก หรือเปลี่ยนบัตร"
+    ]
+  },
+  "9104": {
+    "title": "Insufficient Funds in account or request exceeded card limits or exceeded withdrawal frequency limit . Customer must contact the Issuer Bank before retrying with same card. Retry with a different card or use another payment method.",
+    "description": "ยอดเงิน/วงเงินในบัญชีผู้ถือบัตรไม่เพียงพอต่อรายการนี้.",
+    "next_steps": [
+      "แจ้งลูกค้าให้ตรวจสอบยอดเงิน/วงเงิน",
+      "เสนอวิธีชำระเงินทางเลือก เช่น โอน/พร้อมเพย์/บัตรใบอื่น",
+      "ลองทำรายการอีกครั้งภายหลัง"
+    ]
+  },
+  "9107": {
+    "title": "Invalid/Incorrect Authentication values entered. Retry request with valid/correct values or use another payment method.",
+    "description": "คำอธิบายจากผู้ให้บริการ: Invalid/Incorrect Authentication values entered. Retry request with valid/correct values or use another payment method.",
+    "next_steps": [
+      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
+      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
+      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
+    ]
+  },
+  "9108": {
+    "title": "The transaction request initiated is not supported by the card being used. Do not retry transaction with same card. Retry with a different card or use another payment method or contact Issuer for more information.",
+    "description": "ไม่ควรลองตัดบัตรใบเดิมซ้ำ (Do not retry with the same card). โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติม.",
+    "next_steps": [
+      "งด retry บัตรใบเดิม",
+      "เสนอวิธีชำระเงินทางเลือก หรือเปลี่ยนบัตร",
+      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
+      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
+    ]
+  },
+  "9127": {
+    "title": "Cardholder has exceeded the number of PIN retries allowed. Retry with same card allowed ONLY after 24 hours. Retry with a different card or use another payment method.",
+    "description": "คำอธิบายจากผู้ให้บริการ: Cardholder has exceeded the number of PIN retries allowed. Retry with same card allowed ONLY after 24 hours. Retry with a different card or use another payment method.",
+    "next_steps": [
+      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
+      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
+      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
+    ]
+  },
+  "9114": {
+    "title": "The account number for the customer's payment method is not valid. It may be a closed account or non existent credit account or an invalid card number. Do not retry transaction with same card. Retry with a different card or use another payment method or contact Issuer for more information.",
+    "description": "ข้อมูลบัตรไม่ถูกต้อง (หมายเลข/รูปแบบ/บัญชีไม่ถูกต้อง). ไม่ควรลองตัดบัตรใบเดิมซ้ำ (Do not retry with the same card). โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติม.",
+    "next_steps": [
+      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
+      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้",
+      "งด retry บัตรใบเดิม",
+      "เสนอวิธีชำระเงินทางเลือก หรือเปลี่ยนบัตร",
+      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
+      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
+    ]
+  },
+  "9802": {
+    "title": "The transaction has already been settled or reversed. No further action possible for this transaction. Contact Issuer for more information.",
+    "description": "โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติม.",
+    "next_steps": [
+      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
+      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
+    ]
+  },
+  "9135": {
+    "title": "Mastercard specific error declined for either Invalid Merchant, Invalid Amount or Transaction Not Permitted or Exceeds Withdrawal amount or Restricted Card or Exceeds Withdrawal Count. Retry with a different card or use another payment method.",
+    "description": "คำขอถูกปฏิเสธโดยธนาคารผู้ออกบัตร (Issuer).",
+    "next_steps": [
+      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อปลดบล็อก/ขอข้อมูล",
+      "เสนอวิธีชำระเงินทางเลือก"
+    ]
+  },
+  "9116": {
+    "title": "Suspected fraudulent activity associated with the card being used. Do not retry transaction with same card. Contact Issuer for more information.",
+    "description": "ไม่ควรลองตัดบัตรใบเดิมซ้ำ (Do not retry with the same card). โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติม.",
+    "next_steps": [
+      "งด retry บัตรใบเดิม",
+      "เสนอวิธีชำระเงินทางเลือก หรือเปลี่ยนบัตร",
+      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
+      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
+    ]
+  },
+  "9128": {
+    "title": "The authorization life cycle or status associated with the transaction is invalid or unrecognized. Contact Issuer for more information.",
+    "description": "โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติม.",
+    "next_steps": [
+      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
+      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
+    ]
+  },
+  "9117": {
+    "title": "Cardholder’s authentication data are not valid or there is a Security violation. Authenticate the cardholder before continuing with the transaction or Retry with a different card or use another payment method or contact Issuer for more information.",
+    "description": "ระบบตรวจพบความเสี่ยง/พฤติกรรมที่อาจเข้าข่ายทุจริต จึงปฏิเสธรายการ. โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติม.",
+    "next_steps": [
+      "หยุดการตัดซ้ำชั่วคราวและทำ KYC/ตรวจสอบเพิ่มเติม",
+      "แจ้งทีมความเสี่ยงเพื่อตรวจสอบ",
+      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
+      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
+    ]
+  },
+  "9998": {
+    "title": "Request was interrupted due to communication failure with Issuer environment. Retry request after some time.",
+    "description": "คำอธิบายจากผู้ให้บริการ: Request was interrupted due to communication failure with Issuer environment. Retry request after some time.",
+    "next_steps": [
+      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
+      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
+      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
+    ]
+  },
+  "9129": {
+    "title": "The customer's card Issuer has declined the transaction as this transaction appears to be a duplicate transmission. Contact Issuer for more information.",
+    "description": "คำขอถูกปฏิเสธโดยธนาคารผู้ออกบัตร (Issuer). โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติม.",
+    "next_steps": [
+      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อปลดบล็อก/ขอข้อมูล",
+      "เสนอวิธีชำระเงินทางเลือก",
+      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
+      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
+    ]
+  },
+  "9999": {
+    "title": "Technical Error. Retry request after some time or contact Issuer for more information.",
+    "description": "โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติม.",
+    "next_steps": [
+      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
+      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
+    ]
+  },
+  "9131": {
+    "title": "The transaction has not been processed for reasons unknown and the cardholder/merchant should attempt to process the transaction again.",
+    "description": "คำอธิบายจากผู้ให้บริการ: The transaction has not been processed for reasons unknown and the cardholder/merchant should attempt to process the transaction again.",
+    "next_steps": [
+      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
+      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
+      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
+    ]
+  },
+  "9105": {
+    "title": "Card has been reported lost or stolen. Do not retry transaction with same card. Retrieve card and contact Issuer for more information.",
+    "description": "บัตรถูกแจ้งหาย/ถูกขโมยหรือถูกอายัด. ไม่ควรลองตัดบัตรใบเดิมซ้ำ (Do not retry with the same card). โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติม.",
+    "next_steps": [
+      "หยุดการตัดซ้ำ",
+      "อย่าพยายามตัดบัตรใบนี้อีก",
+      "ขอวิธีชำระเงินใหม่จากลูกค้า",
+      "งด retry บัตรใบเดิม",
+      "เสนอวิธีชำระเงินทางเลือก หรือเปลี่ยนบัตร",
+      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
+      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
+    ]
+  },
+  "9133": {
+    "title": "The transaction does not comply with Anti-Money laundering requirements. Contact Issuer for more information.",
+    "description": "โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติม.",
+    "next_steps": [
+      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
+      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
+    ]
+  },
+  "9134": {
+    "title": "System unable to match reversal request to an original message. Retry request with valid original transaction reference.",
+    "description": "คำอธิบายจากผู้ให้บริการ: System unable to match reversal request to an original message. Retry request with valid original transaction reference.",
+    "next_steps": [
+      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
+      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
+      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
+    ]
+  },
+  "9132": {
+    "title": "Card has been temporarily blocked. Retry with a different card or use another payment method or Contact Issuer for more information.",
+    "description": "โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติม.",
+    "next_steps": [
+      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
+      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
+    ]
+  },
+  "9700": {
+    "title": "The amount being processed is more than the originally authorized amount. Retry with an amount equal to or less than the originally authorized amount.",
+    "description": "คำอธิบายจากผู้ให้บริการ: The amount being processed is more than the originally authorized amount. Retry with an amount equal to or less than the originally authorized amount.",
+    "next_steps": [
+      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
+      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
+      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
+    ]
+  },
+  "9130": {
+    "title": "Cardholder has forbidden the card issuer to allow recurring payments from you. Do not retry transaction with same card. You should stop charging the payment method immediately to avoid chargebacks.",
+    "description": "ไม่ควรลองตัดบัตรใบเดิมซ้ำ (Do not retry with the same card). ข้อจำกัดเกี่ยวกับรายการตัดอัตโนมัติ/ผ่อนชำระ อาจไม่อนุญาตโดยธนาคารหรือผู้ประมวลผล.",
+    "next_steps": [
+      "งด retry บัตรใบเดิม",
+      "เสนอวิธีชำระเงินทางเลือก หรือเปลี่ยนบัตร",
+      "ตรวจสอบการตั้งค่าการเรียกเก็บซ้ำ/ผ่อนชำระ",
+      "พิจารณาวิธีชำระเงินอื่น"
+    ]
+  },
+  "9200": {
+    "title": "Cybersource Specific : Request is missing one or more required fields. Resend the request with the complete information",
+    "description": "คำอธิบายจากผู้ให้บริการ: Cybersource Specific : Request is missing one or more required fields. Resend the request with the complete information",
+    "next_steps": [
+      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
+      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
+      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
+    ]
+  },
+  "9201": {
+    "title": "One or more fields in the request contains invalid data. Resend the request with the valid information.",
+    "description": "คำอธิบายจากผู้ให้บริการ: One or more fields in the request contains invalid data. Resend the request with the valid information.",
+    "next_steps": [
+      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
+      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
+      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
+    ]
+  },
+  "9202": {
+    "title": "Duplicate transaction reference. Resend the request with a unique transaction reference.",
+    "description": "คำอธิบายจากผู้ให้บริการ: Duplicate transaction reference. Resend the request with a unique transaction reference.",
+    "next_steps": [
+      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
+      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
+      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
+    ]
+  },
+  "9102": {
+    "title": "Expired card. Do not retry transaction with same card. Retry with a different card or use another payment method.",
+    "description": "บัตรเครดิต/เดบิตหมดอายุ. ไม่ควรลองตัดบัตรใบเดิมซ้ำ (Do not retry with the same card).",
+    "next_steps": [
+      "ให้ลูกค้าอัปเดตข้อมูลบัตรใบใหม่",
+      "ตรวจสอบวันหมดอายุ/CVC",
+      "งด retry บัตรใบเดิม",
+      "เสนอวิธีชำระเงินทางเลือก หรือเปลี่ยนบัตร"
+    ]
+  },
+  "9106": {
+    "title": "Cybersource Specific : Inactive card or card not authorized for e-commerce transactions. Check card settings or contact Issuer for more information.",
+    "description": "โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติม.",
+    "next_steps": [
+      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
+      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
+    ]
+  },
+  "9110": {
+    "title": "Customer details matched in Block List maintained by Issuer/Processor. Do not retry transaction with same card. Contact Issuer for more information.",
+    "description": "ไม่ควรลองตัดบัตรใบเดิมซ้ำ (Do not retry with the same card). โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติม.",
+    "next_steps": [
+      "งด retry บัตรใบเดิม",
+      "เสนอวิธีชำระเงินทางเลือก หรือเปลี่ยนบัตร",
+      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
+      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
+    ]
+  },
+  "9112": {
+    "title": "Various reasons contribute to this error. The card has expired, reached its limit, is not being authorized as a valid card, not authorized for Internet transactions, not been activated yet, shop is blacklisted or has some other block in place. Contact Issuer for more information.",
+    "description": "บัตรเครดิต/เดบิตหมดอายุ. โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติม.",
+    "next_steps": [
+      "ให้ลูกค้าอัปเดตข้อมูลบัตรใบใหม่",
+      "ตรวจสอบวันหมดอายุ/CVC",
+      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
+      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
+    ]
+  },
+  "9113": {
+    "title": "Cybersource Specific : Processor unable to proceed with authorization since Issuing bank has declined the card used.Do not retry transaction with same card. Contact Issuer for more information.",
+    "description": "คำขอถูกปฏิเสธโดยธนาคารผู้ออกบัตร (Issuer). ไม่ควรลองตัดบัตรใบเดิมซ้ำ (Do not retry with the same card). โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติม.",
+    "next_steps": [
+      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อปลดบล็อก/ขอข้อมูล",
+      "เสนอวิธีชำระเงินทางเลือก",
+      "งด retry บัตรใบเดิม",
+      "เสนอวิธีชำระเงินทางเลือก หรือเปลี่ยนบัตร",
+      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
+      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
+    ]
+  },
+  "9806": {
+    "title": "Cybersource Specific : Issue at the processor’s end in executing the request due to technical or other process related issues. Retry request.",
+    "description": "คำอธิบายจากผู้ให้บริการ: Cybersource Specific : Issue at the processor’s end in executing the request due to technical or other process related issues. Retry request.",
+    "next_steps": [
+      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
+      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
+      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
+    ]
+  },
+  "9126": {
+    "title": "Cybersource Specific : The charge being attempted for capture has already been captured. Issue a new authorization and capture request for the new amount.",
+    "description": "คำอธิบายจากผู้ให้บริการ: Cybersource Specific : The charge being attempted for capture has already been captured. Issue a new authorization and capture request for the new amount.",
+    "next_steps": [
+      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
+      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
+      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
+    ]
+  },
+  "9115": {
+    "title": "Cybersource Specific : The requested transaction amount must match the previous transaction amount. Correct the amount and resend the request.",
+    "description": "คำอธิบายจากผู้ให้บริการ: Cybersource Specific : The requested transaction amount must match the previous transaction amount. Correct the amount and resend the request.",
+    "next_steps": [
+      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
+      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
+      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
+    ]
+  },
+  "9801": {
+    "title": "Cybersource Specific : You requested a capture, but there is no corresponding, unused authorization record. Occurs if there was not a previously successful authorization request or if the previously successful authorization has already been used by another capture request. Request a new authorization, and if successful, proceed with the capture.",
+    "description": "คำอธิบายจากผู้ให้บริการ: Cybersource Specific : You requested a capture, but there is no corresponding, unused authorization record. Occurs if there was not a previously successful authorization request or if the previously successful authorization has already been used by another capture request. Request a new authorization, and if successful, proceed with the capture.",
+    "next_steps": [
+      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
+      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
+      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
+    ]
+  },
+  "9803": {
+    "title": "Cybersource Specific : The capture or credit is not voidable because the capture or credit information has already been submitted to your processor. Or, you requested a void for a type of transaction that cannot be voided. No further action possible for this transaction.",
+    "description": "คำอธิบายจากผู้ให้บริการ: Cybersource Specific : The capture or credit is not voidable because the capture or credit information has already been submitted to your processor. Or, you requested a void for a type of transaction that cannot be voided. No further action possible for this transaction.",
+    "next_steps": [
+      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
+      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
+      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
+    ]
+  },
+  "9804": {
+    "title": "Cybersource Specific : You requested a credit for a capture that was previously voided. No further action possible for this transaction.",
+    "description": "คำอธิบายจากผู้ให้บริการ: Cybersource Specific : You requested a credit for a capture that was previously voided. No further action possible for this transaction.",
+    "next_steps": [
+      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
+      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
+      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
+    ]
+  },
+  "9805": {
+    "title": "Cybersource Specific : Account is prohibited from processing stand-alone refunds. Contact processor for more information.",
+    "description": "คำอธิบายจากผู้ให้บริการ: Cybersource Specific : Account is prohibited from processing stand-alone refunds. Contact processor for more information.",
+    "next_steps": [
+      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
+      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
+      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
+    ]
+  },
+  "9100": {
+    "title": "Cybersource Specific : Request declined by Scheme because it did not pass the Address Verification System (AVS) check.",
+    "description": "คำขอถูกปฏิเสธโดยธนาคารผู้ออกบัตร (Issuer). ข้อมูลที่อยู่/รหัสไปรษณีย์ไม่ตรงกับข้อมูลที่ธนาคารมีอยู่ (AVS mismatch).",
+    "next_steps": [
+      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อปลดบล็อก/ขอข้อมูล",
+      "เสนอวิธีชำระเงินทางเลือก",
+      "ให้ลูกค้าตรวจสอบที่อยู่/รหัสไปรษณีย์กับธนาคาร",
+      "พิจารณาวิธีชำระเงินทางเลือก"
+    ]
+  },
+  "9118": {
+    "title": "Cybersource Specific : Suspicious activity on card. Do not retry with same card. Retry with a different card or use another payment method.",
+    "description": "ไม่ควรลองตัดบัตรใบเดิมซ้ำ (Do not retry with the same card).",
+    "next_steps": [
+      "งด retry บัตรใบเดิม",
+      "เสนอวิธีชำระเงินทางเลือก หรือเปลี่ยนบัตร"
+    ]
+  },
+  "9119": {
+    "title": "Cybersource Specific : Processor has refused the transaction. Contact processor for more information.",
+    "description": "คำอธิบายจากผู้ให้บริการ: Cybersource Specific : Processor has refused the transaction. Contact processor for more information.",
+    "next_steps": [
+      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
+      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
+      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
+    ]
+  },
+  "9120": {
+    "title": "Soft Decline - The authorization request was approved by the issuing bank but declined by Cybersource based on Merchant’s Smart Authorization settings. Retry with a different card or use another payment method.",
+    "description": "คำขอถูกปฏิเสธโดยธนาคารผู้ออกบัตร (Issuer).",
+    "next_steps": [
+      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อปลดบล็อก/ขอข้อมูล",
+      "เสนอวิธีชำระเงินทางเลือก"
+    ]
+  },
+  "9121": {
+    "title": "Cybersource Specific : Customer details matched in Block List maintained by Issuer/Processor. Contact Issuer for more information.",
+    "description": "โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติม.",
+    "next_steps": [
+      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
+      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
+    ]
+  },
+  "9122": {
+    "title": "Cybersource Export Compliance failure. Check the compliance criteria and retry.",
+    "description": "คำอธิบายจากผู้ให้บริการ: Cybersource Export Compliance failure. Check the compliance criteria and retry.",
+    "next_steps": [
+      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
+      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
+      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
+    ]
+  },
+  "9123": {
+    "title": "Cybersource Export Compliance failure. Check the compliance criteria and retry.",
+    "description": "คำอธิบายจากผู้ให้บริการ: Cybersource Export Compliance failure. Check the compliance criteria and retry.",
+    "next_steps": [
+      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
+      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
+      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
+    ]
+  },
+  "9124": {
+    "title": "Cybersource Export Compliance failure. Check the compliance criteria and retry.",
+    "description": "คำอธิบายจากผู้ให้บริการ: Cybersource Export Compliance failure. Check the compliance criteria and retry.",
+    "next_steps": [
+      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
+      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
+      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
+    ]
+  },
+  "9400": {
+    "title": "ITMX Specific Authentication Failure related to Invalid XML, Invalid API Key, Invalid JWT or generic Authentication Failure. Retry request with valid data or use another payment method.",
+    "description": "คำอธิบายจากผู้ให้บริการ: ITMX Specific Authentication Failure related to Invalid XML, Invalid API Key, Invalid JWT or generic Authentication Failure. Retry request with valid data or use another payment method.",
+    "next_steps": [
+      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
+      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
+      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
+    ]
+  },
+  "9990": {
+    "title": "The card issuer has indicated that they are unable to verify the authentication data.Retry the request and if failed, the customer should contact their bank or use an alternate card or an alternate payment method.",
+    "description": "คำอธิบายจากผู้ให้บริการ: The card issuer has indicated that they are unable to verify the authentication data.Retry the request and if failed, the customer should contact their bank or use an alternate card or an alternate payment method.",
+    "next_steps": [
+      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
+      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
+      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
+    ]
+  },
   "9001": {
     "title": "Advise cardholder to update card information before next billing cycle",
     "description": "คำอธิบายจากผู้ให้บริการ: Advise cardholder to update card information before next billing cycle",
     "next_steps": [
-      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
-      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้"
+      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
+      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
+      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
     ]
   },
   "9002": {
@@ -20,18 +484,16 @@
     "title": "Do not retry the transaction with the same card",
     "description": "ไม่ควรลองตัดบัตรใบเดิมซ้ำ (Do not retry with the same card).",
     "next_steps": [
-      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
-      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
-      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
+      "งด retry บัตรใบเดิม",
+      "เสนอวิธีชำระเงินทางเลือก หรือเปลี่ยนบัตร"
     ]
   },
   "9004": {
     "title": "Payment Cancellation. Do not retry the transaction with the same card",
     "description": "ไม่ควรลองตัดบัตรใบเดิมซ้ำ (Do not retry with the same card).",
     "next_steps": [
-      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
-      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
-      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
+      "งด retry บัตรใบเดิม",
+      "เสนอวิธีชำระเงินทางเลือก หรือเปลี่ยนบัตร"
     ]
   },
   "9005": {
@@ -137,8 +599,9 @@
     "title": "Issuer cannot approve with the details provided in the authorization request.Advise cardholder to update card information. Reattempt allowed after information update.",
     "description": "คำอธิบายจากผู้ให้บริการ: Issuer cannot approve with the details provided in the authorization request.Advise cardholder to update card information. Reattempt allowed after information update.",
     "next_steps": [
-      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
-      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้"
+      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
+      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
+      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
     ]
   },
   "9017": {
@@ -181,16 +644,18 @@
     "title": "No information, or response not provided.",
     "description": "คำอธิบายจากผู้ให้บริการ: No information, or response not provided.",
     "next_steps": [
-      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
-      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้"
+      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
+      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
+      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
     ]
   },
   "9022": {
     "title": "New account information is available.Advise cardholder to update card information. Reattempt allowed after information update.",
     "description": "คำอธิบายจากผู้ให้บริการ: New account information is available.Advise cardholder to update card information. Reattempt allowed after information update.",
     "next_steps": [
-      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
-      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้"
+      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
+      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
+      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
     ]
   },
   "9023": {
@@ -231,10 +696,12 @@
   },
   "9027": {
     "title": "Cardholder has forbidden the card issuer to allow recurring payments from you. You should stop charging the payment method immediately to avoid chargebacks and contact Issuer for more details.",
-    "description": "โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติมหรือปลดบล็อก.",
+    "description": "โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติม. ข้อจำกัดเกี่ยวกับรายการตัดอัตโนมัติ/ผ่อนชำระ อาจไม่อนุญาตโดยธนาคารหรือผู้ประมวลผล.",
     "next_steps": [
       "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
-      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
+      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ",
+      "ตรวจสอบการตั้งค่าการเรียกเก็บซ้ำ/ผ่อนชำระ",
+      "พิจารณาวิธีชำระเงินอื่น"
     ]
   },
   "9028": {
@@ -244,482 +711,6 @@
       "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
       "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
       "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
-    ]
-  },
-  "9100": {
-    "title": "Cybersource Specific : Request declined by Scheme because it did not pass the Address Verification System (AVS) check.",
-    "description": "คำขอถูกปฏิเสธโดยธนาคารผู้ออกบัตร (Issuer). ข้อมูลที่อยู่/รหัสไปรษณีย์ของผู้ถือบัตรไม่ตรงกับข้อมูลที่ธนาคารผู้ออกบัตรมีอยู่ (AVS mismatch).",
-    "next_steps": [
-      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อปลดบล็อกหรือขอข้อมูล",
-      "เสนอวิธีชำระเงินทางเลือก"
-    ]
-  },
-  "9101": {
-    "title": "Request was declined by Issuer. In case of JCB card, it might relate to incorrect personal details. Do not retry transaction with same card. Contact Issuer for more information.",
-    "description": "คำขอถูกปฏิเสธโดยธนาคารผู้ออกบัตร (Issuer). ในกรณีบัตร JCB อาจเกี่ยวข้องกับข้อมูลส่วนบุคคลของผู้ถือบัตรไม่ถูกต้อง. โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติมหรือปลดบล็อก. ไม่ควรลองตัดบัตรใบเดิมซ้ำ (Do not retry with the same card).",
-    "next_steps": [
-      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
-      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้",
-      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อปลดบล็อกหรือขอข้อมูล",
-      "เสนอวิธีชำระเงินทางเลือก",
-      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
-      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
-    ]
-  },
-  "9102": {
-    "title": "Expired card. Do not retry transaction with same card. Retry with a different card or use another payment method.",
-    "description": "บัตรหมดอายุ กรุณาอัปเดตข้อมูลบัตรใบใหม่. ไม่ควรลองตัดบัตรใบเดิมซ้ำ (Do not retry with the same card). ลองใช้บัตรใบอื่นหรือเปลี่ยนไปใช้วิธีชำระเงินทางเลือก (เช่น โอน/พร้อมเพย์) แทน.",
-    "next_steps": [
-      "ให้ลูกค้าอัปเดตข้อมูลบัตรใหม่",
-      "ตรวจสอบวันหมดอายุ/CVC"
-    ]
-  },
-  "9103": {
-    "title": "Request was declined by Issuer. Do not retry transaction with same card. Retry with a different card or use another payment method or Contact Issuer for more information.",
-    "description": "คำขอถูกปฏิเสธโดยธนาคารผู้ออกบัตร (Issuer). โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติมหรือปลดบล็อก. ไม่ควรลองตัดบัตรใบเดิมซ้ำ (Do not retry with the same card). ลองใช้บัตรใบอื่นหรือเปลี่ยนไปใช้วิธีชำระเงินทางเลือก (เช่น โอน/พร้อมเพย์) แทน.",
-    "next_steps": [
-      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
-      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้",
-      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อปลดบล็อกหรือขอข้อมูล",
-      "เสนอวิธีชำระเงินทางเลือก",
-      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
-      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
-    ]
-  },
-  "9104": {
-    "title": "Insufficient Funds in account or request exceeded card limits or exceeded withdrawal frequency limit . Customer must contact the Issuer Bank before retrying with same card. Retry with a different card or use another payment method.",
-    "description": "รายการถูกปฏิเสธเนื่องจากยอดเงินหรือวงเงินในบัญชีของผู้ถือบัตรไม่เพียงพอสำหรับธุรกรรมนี้. ลองใช้บัตรใบอื่นหรือเปลี่ยนไปใช้วิธีชำระเงินทางเลือก (เช่น โอน/พร้อมเพย์) แทน.",
-    "next_steps": [
-      "แจ้งลูกค้าให้ตรวจสอบยอดเงิน/วงเงินคงเหลือ",
-      "เสนอวิธีชำระเงินทางเลือก เช่น โอน/พร้อมเพย์/บัตรใบอื่น",
-      "ตั้ง retry ภายหลัง (เช่น 24 ชม.) และจำกัดจำนวนครั้ง"
-    ]
-  },
-  "9105": {
-    "title": "Card has been reported lost or stolen. Do not retry transaction with same card. Retrieve card and contact Issuer for more information.",
-    "description": "บัตรถูกแจ้งหาย/ถูกขโมยหรือถูกอายัดโดยธนาคารผู้ออกบัตร. โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติมหรือปลดบล็อก. ไม่ควรลองตัดบัตรใบเดิมซ้ำ (Do not retry with the same card).",
-    "next_steps": [
-      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
-      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้",
-      "ยกเลิกการเรียกเก็บและหยุด retry",
-      "อย่าพยายามตัดบัตรใบนี้อีก",
-      "ขอวิธีชำระเงินใหม่จากลูกค้า",
-      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
-      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
-    ]
-  },
-  "9106": {
-    "title": "Cybersource Specific : Inactive card or card not authorized for e-commerce transactions. Check card settings or contact Issuer for more information.",
-    "description": "โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติมหรือปลดบล็อก.",
-    "next_steps": [
-      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
-      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้",
-      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
-      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
-    ]
-  },
-  "9107": {
-    "title": "Invalid/Incorrect Authentication values entered. Retry request with valid/correct values or use another payment method.",
-    "description": "ลองใช้บัตรใบอื่นหรือเปลี่ยนไปใช้วิธีชำระเงินทางเลือก (เช่น โอน/พร้อมเพย์) แทน.",
-    "next_steps": [
-      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
-      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้"
-    ]
-  },
-  "9108": {
-    "title": "The transaction request initiated is not supported by the card being used. Do not retry transaction with same card. Retry with a different card or use another payment method or contact Issuer for more information.",
-    "description": "โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติมหรือปลดบล็อก. ไม่ควรลองตัดบัตรใบเดิมซ้ำ (Do not retry with the same card). ลองใช้บัตรใบอื่นหรือเปลี่ยนไปใช้วิธีชำระเงินทางเลือก (เช่น โอน/พร้อมเพย์) แทน.",
-    "next_steps": [
-      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
-      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้",
-      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
-      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
-    ]
-  },
-  "9110": {
-    "title": "Customer details matched in Block List maintained by Issuer/Processor. Do not retry transaction with same card. Contact Issuer for more information.",
-    "description": "โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติมหรือปลดบล็อก. ไม่ควรลองตัดบัตรใบเดิมซ้ำ (Do not retry with the same card).",
-    "next_steps": [
-      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
-      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้",
-      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
-      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
-    ]
-  },
-  "9111": {
-    "title": "Issue linked to merchant’s MID number. This error code indicates that a MID was not found for a transaction, meaning there’s no connection between the merchant account and their payment gateway. Contact your payment processor for more information.",
-    "description": "คำอธิบายจากผู้ให้บริการ: Issue linked to merchant’s MID number. This error code indicates that a MID was not found for a transaction, meaning there’s no connection between the merchant account and their payment gateway. Contact your payment processor for more information.",
-    "next_steps": [
-      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
-      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้"
-    ]
-  },
-  "9112": {
-    "title": "Various reasons contribute to this error. The card has expired, reached its limit, is not being authorized as a valid card, not authorized for Internet transactions, not been activated yet, shop is blacklisted or has some other block in place. Contact Issuer for more information.",
-    "description": "บัตรหมดอายุ กรุณาอัปเดตข้อมูลบัตรใบใหม่. โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติมหรือปลดบล็อก.",
-    "next_steps": [
-      "ให้ลูกค้าอัปเดตข้อมูลบัตรใหม่",
-      "ตรวจสอบวันหมดอายุ/CVC",
-      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
-      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้",
-      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
-      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
-    ]
-  },
-  "9113": {
-    "title": "Cybersource Specific : Processor unable to proceed with authorization since Issuing bank has declined the card used.Do not retry transaction with same card. Contact Issuer for more information.",
-    "description": "คำขอถูกปฏิเสธโดยธนาคารผู้ออกบัตร (Issuer). โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติมหรือปลดบล็อก. ไม่ควรลองตัดบัตรใบเดิมซ้ำ (Do not retry with the same card).",
-    "next_steps": [
-      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
-      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้",
-      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อปลดบล็อกหรือขอข้อมูล",
-      "เสนอวิธีชำระเงินทางเลือก",
-      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
-      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
-    ]
-  },
-  "9114": {
-    "title": "The account number for the customer's payment method is not valid. It may be a closed account or non existent credit account or an invalid card number. Do not retry transaction with same card. Retry with a different card or use another payment method or contact Issuer for more information.",
-    "description": "ข้อมูลบัตรไม่ถูกต้อง (หมายเลข/รูปแบบ/บัญชีไม่ถูกต้อง). โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติมหรือปลดบล็อก. ไม่ควรลองตัดบัตรใบเดิมซ้ำ (Do not retry with the same card). ลองใช้บัตรใบอื่นหรือเปลี่ยนไปใช้วิธีชำระเงินทางเลือก (เช่น โอน/พร้อมเพย์) แทน.",
-    "next_steps": [
-      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
-      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้",
-      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
-      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
-    ]
-  },
-  "9115": {
-    "title": "Cybersource Specific : The requested transaction amount must match the previous transaction amount. Correct the amount and resend the request.",
-    "description": "คำอธิบายจากผู้ให้บริการ: Cybersource Specific : The requested transaction amount must match the previous transaction amount. Correct the amount and resend the request.",
-    "next_steps": [
-      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
-      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
-      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
-    ]
-  },
-  "9116": {
-    "title": "Suspected fraudulent activity associated with the card being used. Do not retry transaction with same card. Contact Issuer for more information.",
-    "description": "โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติมหรือปลดบล็อก. ไม่ควรลองตัดบัตรใบเดิมซ้ำ (Do not retry with the same card).",
-    "next_steps": [
-      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
-      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้",
-      "หยุดการตัดซ้ำชั่วคราวและทำ KYC/ตรวจสอบตัวตน",
-      "แจ้งทีมความเสี่ยงเพื่อตรวจสอบเพิ่มเติม",
-      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
-      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
-    ]
-  },
-  "9117": {
-    "title": "Cardholder’s authentication data are not valid or there is a Security violation. Authenticate the cardholder before continuing with the transaction or Retry with a different card or use another payment method or contact Issuer for more information.",
-    "description": "ระบบตรวจพบความเสี่ยง/พฤติกรรมที่อาจเข้าข่ายทุจริต จึงปฏิเสธรายการ. โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติมหรือปลดบล็อก. ลองใช้บัตรใบอื่นหรือเปลี่ยนไปใช้วิธีชำระเงินทางเลือก (เช่น โอน/พร้อมเพย์) แทน.",
-    "next_steps": [
-      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
-      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้",
-      "หยุดการตัดซ้ำชั่วคราวและทำ KYC/ตรวจสอบตัวตน",
-      "แจ้งทีมความเสี่ยงเพื่อตรวจสอบเพิ่มเติม",
-      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
-      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
-    ]
-  },
-  "9118": {
-    "title": "Cybersource Specific : Suspicious activity on card. Do not retry with same card. Retry with a different card or use another payment method.",
-    "description": "ไม่ควรลองตัดบัตรใบเดิมซ้ำ (Do not retry with the same card). ลองใช้บัตรใบอื่นหรือเปลี่ยนไปใช้วิธีชำระเงินทางเลือก (เช่น โอน/พร้อมเพย์) แทน.",
-    "next_steps": [
-      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
-      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
-      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
-    ]
-  },
-  "9119": {
-    "title": "Cybersource Specific : Processor has refused the transaction. Contact processor for more information.",
-    "description": "คำอธิบายจากผู้ให้บริการ: Cybersource Specific : Processor has refused the transaction. Contact processor for more information.",
-    "next_steps": [
-      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
-      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้"
-    ]
-  },
-  "9120": {
-    "title": "Soft Decline - The authorization request was approved by the issuing bank but declined by Cybersource based on Merchant’s Smart Authorization settings. Retry with a different card or use another payment method.",
-    "description": "คำขอถูกปฏิเสธโดยธนาคารผู้ออกบัตร (Issuer). ลองใช้บัตรใบอื่นหรือเปลี่ยนไปใช้วิธีชำระเงินทางเลือก (เช่น โอน/พร้อมเพย์) แทน.",
-    "next_steps": [
-      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อปลดบล็อกหรือขอข้อมูล",
-      "เสนอวิธีชำระเงินทางเลือก"
-    ]
-  },
-  "9121": {
-    "title": "Cybersource Specific : Customer details matched in Block List maintained by Issuer/Processor. Contact Issuer for more information.",
-    "description": "โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติมหรือปลดบล็อก.",
-    "next_steps": [
-      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
-      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้",
-      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
-      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
-    ]
-  },
-  "9122": {
-    "title": "Cybersource Export Compliance failure. Check the compliance criteria and retry.",
-    "description": "คำอธิบายจากผู้ให้บริการ: Cybersource Export Compliance failure. Check the compliance criteria and retry.",
-    "next_steps": [
-      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
-      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
-      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
-    ]
-  },
-  "9123": {
-    "title": "Cybersource Export Compliance failure. Check the compliance criteria and retry.",
-    "description": "คำอธิบายจากผู้ให้บริการ: Cybersource Export Compliance failure. Check the compliance criteria and retry.",
-    "next_steps": [
-      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
-      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
-      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
-    ]
-  },
-  "9124": {
-    "title": "Cybersource Export Compliance failure. Check the compliance criteria and retry.",
-    "description": "คำอธิบายจากผู้ให้บริการ: Cybersource Export Compliance failure. Check the compliance criteria and retry.",
-    "next_steps": [
-      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
-      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
-      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
-    ]
-  },
-  "9126": {
-    "title": "Cybersource Specific : The charge being attempted for capture has already been captured. Issue a new authorization and capture request for the new amount.",
-    "description": "คำอธิบายจากผู้ให้บริการ: Cybersource Specific : The charge being attempted for capture has already been captured. Issue a new authorization and capture request for the new amount.",
-    "next_steps": [
-      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
-      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
-      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
-    ]
-  },
-  "9127": {
-    "title": "Cardholder has exceeded the number of PIN retries allowed. Retry with same card allowed ONLY after 24 hours. Retry with a different card or use another payment method.",
-    "description": "ลองใช้บัตรใบอื่นหรือเปลี่ยนไปใช้วิธีชำระเงินทางเลือก (เช่น โอน/พร้อมเพย์) แทน.",
-    "next_steps": [
-      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
-      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
-      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
-    ]
-  },
-  "9128": {
-    "title": "The authorization life cycle or status associated with the transaction is invalid or unrecognized. Contact Issuer for more information.",
-    "description": "โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติมหรือปลดบล็อก.",
-    "next_steps": [
-      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
-      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้",
-      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
-      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
-    ]
-  },
-  "9129": {
-    "title": "The customer's card Issuer has declined the transaction as this transaction appears to be a duplicate transmission. Contact Issuer for more information.",
-    "description": "คำขอถูกปฏิเสธโดยธนาคารผู้ออกบัตร (Issuer). โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติมหรือปลดบล็อก.",
-    "next_steps": [
-      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
-      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้",
-      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อปลดบล็อกหรือขอข้อมูล",
-      "เสนอวิธีชำระเงินทางเลือก",
-      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
-      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
-    ]
-  },
-  "9130": {
-    "title": "Cardholder has forbidden the card issuer to allow recurring payments from you. Do not retry transaction with same card. You should stop charging the payment method immediately to avoid chargebacks.",
-    "description": "ไม่ควรลองตัดบัตรใบเดิมซ้ำ (Do not retry with the same card).",
-    "next_steps": [
-      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
-      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
-      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
-    ]
-  },
-  "9131": {
-    "title": "The transaction has not been processed for reasons unknown and the cardholder/merchant should attempt to process the transaction again.",
-    "description": "คำอธิบายจากผู้ให้บริการ: The transaction has not been processed for reasons unknown and the cardholder/merchant should attempt to process the transaction again.",
-    "next_steps": [
-      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
-      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
-      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
-    ]
-  },
-  "9132": {
-    "title": "Card has been temporarily blocked. Retry with a different card or use another payment method or Contact Issuer for more information.",
-    "description": "บัตรอาจถูกระงับการใช้งานชั่วคราวเพื่อความปลอดภัย. โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติมหรือปลดบล็อก. ลองใช้บัตรใบอื่นหรือเปลี่ยนไปใช้วิธีชำระเงินทางเลือก (เช่น โอน/พร้อมเพย์) แทน.",
-    "next_steps": [
-      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
-      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้",
-      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
-      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
-    ]
-  },
-  "9133": {
-    "title": "The transaction does not comply with Anti-Money laundering requirements. Contact Issuer for more information.",
-    "description": "โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติมหรือปลดบล็อก.",
-    "next_steps": [
-      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
-      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้",
-      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
-      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
-    ]
-  },
-  "9134": {
-    "title": "System unable to match reversal request to an original message. Retry request with valid original transaction reference.",
-    "description": "คำอธิบายจากผู้ให้บริการ: System unable to match reversal request to an original message. Retry request with valid original transaction reference.",
-    "next_steps": [
-      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
-      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
-      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
-    ]
-  },
-  "9135": {
-    "title": "Mastercard specific error declined for either Invalid Merchant, Invalid Amount or Transaction Not Permitted or Exceeds Withdrawal amount or Restricted Card or Exceeds Withdrawal Count. Retry with a different card or use another payment method.",
-    "description": "คำขอถูกปฏิเสธโดยธนาคารผู้ออกบัตร (Issuer). ลองใช้บัตรใบอื่นหรือเปลี่ยนไปใช้วิธีชำระเงินทางเลือก (เช่น โอน/พร้อมเพย์) แทน.",
-    "next_steps": [
-      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
-      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้",
-      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อปลดบล็อกหรือขอข้อมูล",
-      "เสนอวิธีชำระเงินทางเลือก"
-    ]
-  },
-  "9200": {
-    "title": "Cybersource Specific : Request is missing one or more required fields. Resend the request with the complete information",
-    "description": "คำอธิบายจากผู้ให้บริการ: Cybersource Specific : Request is missing one or more required fields. Resend the request with the complete information",
-    "next_steps": [
-      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
-      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้"
-    ]
-  },
-  "9201": {
-    "title": "One or more fields in the request contains invalid data. Resend the request with the valid information.",
-    "description": "คำอธิบายจากผู้ให้บริการ: One or more fields in the request contains invalid data. Resend the request with the valid information.",
-    "next_steps": [
-      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
-      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้"
-    ]
-  },
-  "9202": {
-    "title": "Duplicate transaction reference. Resend the request with a unique transaction reference.",
-    "description": "คำอธิบายจากผู้ให้บริการ: Duplicate transaction reference. Resend the request with a unique transaction reference.",
-    "next_steps": [
-      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
-      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
-      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
-    ]
-  },
-  "9203": {
-    "title": "The card Issuer has declined the transaction because of an invalid amount or field. This response, at times, can also occur with cards that are not allowed to do online purchases. Retry with valid data or retry with a different card or use another payment method.",
-    "description": "คำขอถูกปฏิเสธโดยธนาคารผู้ออกบัตร (Issuer). ลองใช้บัตรใบอื่นหรือเปลี่ยนไปใช้วิธีชำระเงินทางเลือก (เช่น โอน/พร้อมเพย์) แทน.",
-    "next_steps": [
-      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
-      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้",
-      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อปลดบล็อกหรือขอข้อมูล",
-      "เสนอวิธีชำระเงินทางเลือก"
-    ]
-  },
-  "9204": {
-    "title": "The card number is not within a card number range supported by the scheme. Do not retry transaction with same card. Retry with a different card or use another payment method.",
-    "description": "ไม่ควรลองตัดบัตรใบเดิมซ้ำ (Do not retry with the same card). ลองใช้บัตรใบอื่นหรือเปลี่ยนไปใช้วิธีชำระเงินทางเลือก (เช่น โอน/พร้อมเพย์) แทน.",
-    "next_steps": [
-      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
-      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
-      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
-    ]
-  },
-  "9400": {
-    "title": "ITMX Specific Authentication Failure related to Invalid XML, Invalid API Key, Invalid JWT or generic Authentication Failure. Retry request with valid data or use another payment method.",
-    "description": "ลองใช้บัตรใบอื่นหรือเปลี่ยนไปใช้วิธีชำระเงินทางเลือก (เช่น โอน/พร้อมเพย์) แทน.",
-    "next_steps": [
-      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
-      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้"
-    ]
-  },
-  "9700": {
-    "title": "The amount being processed is more than the originally authorized amount. Retry with an amount equal to or less than the originally authorized amount.",
-    "description": "คำอธิบายจากผู้ให้บริการ: The amount being processed is more than the originally authorized amount. Retry with an amount equal to or less than the originally authorized amount.",
-    "next_steps": [
-      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
-      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
-      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
-    ]
-  },
-  "9801": {
-    "title": "Cybersource Specific : You requested a capture, but there is no corresponding, unused authorization record. Occurs if there was not a previously successful authorization request or if the previously successful authorization has already been used by another capture request. Request a new authorization, and if successful, proceed with the capture.",
-    "description": "คำอธิบายจากผู้ให้บริการ: Cybersource Specific : You requested a capture, but there is no corresponding, unused authorization record. Occurs if there was not a previously successful authorization request or if the previously successful authorization has already been used by another capture request. Request a new authorization, and if successful, proceed with the capture.",
-    "next_steps": [
-      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
-      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
-      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
-    ]
-  },
-  "9802": {
-    "title": "The transaction has already been settled or reversed. No further action possible for this transaction. Contact Issuer for more information.",
-    "description": "โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติมหรือปลดบล็อก.",
-    "next_steps": [
-      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
-      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้",
-      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
-      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
-    ]
-  },
-  "9803": {
-    "title": "Cybersource Specific : The capture or credit is not voidable because the capture or credit information has already been submitted to your processor. Or, you requested a void for a type of transaction that cannot be voided. No further action possible for this transaction.",
-    "description": "คำอธิบายจากผู้ให้บริการ: Cybersource Specific : The capture or credit is not voidable because the capture or credit information has already been submitted to your processor. Or, you requested a void for a type of transaction that cannot be voided. No further action possible for this transaction.",
-    "next_steps": [
-      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
-      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้"
-    ]
-  },
-  "9804": {
-    "title": "Cybersource Specific : You requested a credit for a capture that was previously voided. No further action possible for this transaction.",
-    "description": "คำอธิบายจากผู้ให้บริการ: Cybersource Specific : You requested a credit for a capture that was previously voided. No further action possible for this transaction.",
-    "next_steps": [
-      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
-      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
-      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
-    ]
-  },
-  "9805": {
-    "title": "Cybersource Specific : Account is prohibited from processing stand-alone refunds. Contact processor for more information.",
-    "description": "คำอธิบายจากผู้ให้บริการ: Cybersource Specific : Account is prohibited from processing stand-alone refunds. Contact processor for more information.",
-    "next_steps": [
-      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
-      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้"
-    ]
-  },
-  "9806": {
-    "title": "Cybersource Specific : Issue at the processor’s end in executing the request due to technical or other process related issues. Retry request.",
-    "description": "คำอธิบายจากผู้ให้บริการ: Cybersource Specific : Issue at the processor’s end in executing the request due to technical or other process related issues. Retry request.",
-    "next_steps": [
-      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
-      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
-      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
-    ]
-  },
-  "9990": {
-    "title": "The card issuer has indicated that they are unable to verify the authentication data.Retry the request and if failed, the customer should contact their bank or use an alternate card or an alternate payment method.",
-    "description": "คำอธิบายจากผู้ให้บริการ: The card issuer has indicated that they are unable to verify the authentication data.Retry the request and if failed, the customer should contact their bank or use an alternate card or an alternate payment method.",
-    "next_steps": [
-      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
-      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
-      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
-    ]
-  },
-  "9998": {
-    "title": "Request was interrupted due to communication failure with Issuer environment. Retry request after some time.",
-    "description": "คำอธิบายจากผู้ให้บริการ: Request was interrupted due to communication failure with Issuer environment. Retry request after some time.",
-    "next_steps": [
-      "ตรวจสอบรายละเอียดกับธนาคารผู้ออกบัตร/ผู้ให้บริการเกตเวย์",
-      "ขอข้อมูลเพิ่มเติมจากลูกค้า (เช่น สกรีน/ข้อความแจ้งเตือนจากธนาคาร)",
-      "เสนอวิธีชำระเงินทางเลือกหรือทดลองทำรายการใหม่ภายหลัง"
-    ]
-  },
-  "9999": {
-    "title": "Technical Error. Retry request after some time or contact Issuer for more information.",
-    "description": "โปรดให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตรเพื่อขอรายละเอียดเพิ่มเติมหรือปลดบล็อก.",
-    "next_steps": [
-      "ยืนยันหมายเลขบัตร/วันหมดอายุ/CVC",
-      "ให้ลูกค้าลองบัตรใบอื่นหากยังไม่ได้",
-      "ให้ผู้ถือบัตรติดต่อธนาคารผู้ออกบัตร",
-      "ติดตามผลและแจ้งสถานะให้ลูกค้าทราบ"
     ]
   }
 }
