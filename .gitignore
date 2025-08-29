@@ -1,12 +1,16 @@
+# Node & env
 node_modules/
 .env
 
+# Logs & OS junk
+*.log
+.DS_Store
+
+# JSON: อนุญาตเฉพาะไฟล์ที่เราต้องใช้ใน repo
 *.json
 !package.json
 !package-lock.json
 !merchant_advice_th.json
-!meta-chassis-*.json   # ถ้าจำเป็น
 
+# ถ้ามีไฟล์ secret อื่นที่เป็น .json ให้ใส่ชื่อไว้ด้านล่าง (คงโดน ignore อยู่)
 coway-line-vision-key.json
-*.log
-.DS_Store
