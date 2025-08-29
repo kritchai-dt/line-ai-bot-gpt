@@ -1,12 +1,12 @@
 node_modules/
 .env
 
-# ignore JSON ทั้งหมด ยกเว้นไฟล์ที่ต้องการ
 *.json
+!package.json
+!package-lock.json
 !merchant_advice_th.json
+!meta-chassis-*.json   # ถ้าจำเป็น
 
-# secrets เฉพาะไฟล์นี้ยังคง ignore
 coway-line-vision-key.json
-
 *.log
 .DS_Store
