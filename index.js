@@ -127,6 +127,10 @@ const SEARCH_PATTERNS = [
   /(?:ค้นหา|search)\s*[:\-]?\s*(.+)$/i
 ];
 
+// ================= OCR INTENT & TTL =================
+const OCR_COMMAND_RE = /(?:อ่านรูป|อ่านภาพ|\bocr\b|extract|ดึงข้อความ)/i;
+const OCR_TTL_MS = 2 * 60 * 1000; // เก็บรูปไว้ได้ 2 นาที
+
 // ============ 4) Webhook ============
 app.post('/webhook', line.middleware(config), async (req, res) => {
   try {
@@ -141,7 +145,7 @@ app.post('/webhook', line.middleware(config), async (req, res) => {
 // ใช้ JSON ได้เฉพาะ route อื่น
 app.use(express.json());
 
-// เก็บรูป “รายห้อง/รายคน”
+// เก็บรูป “รายห้อง/รายคน” -> { id, ts }
 const lastImageBySource = new Map();
 
 async function handleEvent(event) {
@@ -150,9 +154,17 @@ async function handleEvent(event) {
   const { source, message, replyToken } = event;
   const skey = getSourceKey(source);
 
-  // --- รูปภาพ -> เก็บไว้รอ OCR ---
+  // --- รูปภาพ -> เก็บไว้รอ OCR (ไม่ OCR อัตโนมัติในกลุ่ม/รูม) ---
   if (message.type === 'image') {
-    lastImageBySource.set(skey, message.id);
+    lastImageBySource.set(skey, { id: message.id, ts: Date.now() });
+
+    // ถ้าเป็นกลุ่ม/รูม แจ้งวิธีเรียกใช้งานด้วยคำสั่ง
+    if (source?.type !== 'user') {
+      await safeReply(replyToken, {
+        type: 'text',
+        text: "📎 เก็บรูปไว้แล้วครับ\nพิมพ์ `@dt helper อ่านรูป` เพื่อให้ผมอ่านข้อความจากภาพ (มีอายุ 2 นาที)"
+      });
+    }
     return;
   }
 
@@ -198,29 +210,35 @@ async function handleEvent(event) {
       }
     }
 
-    // C) OCR ถ้ามีรูปค้างอยู่
-    const lastImgId = lastImageBySource.get(skey);
-    if (lastImgId) {
-      try {
-        const stream = await client.getMessageContent(lastImgId);
-        const chunks = [];
-        stream.on('data', (c) => chunks.push(c));
-        const imageBuffer = await new Promise((resolve, reject) => {
-          stream.on('end', () => resolve(Buffer.concat(chunks)));
-          stream.on('error', reject);
-        });
-
-        const [visionRes] = await visionClient.textDetection({ image: { content: imageBuffer } });
-        const detections = visionRes.textAnnotations;
-        const text = detections.length > 0 ? detections[0].description : '❌ ไม่พบข้อความในภาพ';
-
+    // C) OCR: ต้องมีรูปค้าง + (1:1 หรือ trigger หรือมีคำสั่ง OCR) และยังไม่หมดอายุ
+    const rec = lastImageBySource.get(skey);
+    const wantsOCR = isDirect || hasTrigger || OCR_COMMAND_RE.test(cleaned);
+    if (rec) {
+      const expired = (Date.now() - rec.ts) > OCR_TTL_MS;
+      if (expired) {
         lastImageBySource.delete(skey);
-        await safeReply(replyToken, { type: 'text', text: `🤖 DT Helper อ่านให้แล้วครับ:\n\n${text}` });
-      } catch (err) {
-        console.error('OCR Error:', err.response?.data || err.message);
-        await safeReply(replyToken, { type: 'text', text: 'ขออภัย อ่านรูปไม่ได้ครับ' });
+      } else if (wantsOCR) {
+        try {
+          const stream = await client.getMessageContent(rec.id);
+          const chunks = [];
+          stream.on('data', (c) => chunks.push(c));
+          const imageBuffer = await new Promise((resolve, reject) => {
+            stream.on('end', () => resolve(Buffer.concat(chunks)));
+            stream.on('error', reject);
+          });
+
+          const [visionRes] = await visionClient.textDetection({ image: { content: imageBuffer } });
+          const detections = visionRes.textAnnotations;
+          const text = detections.length > 0 ? detections[0].description : '❌ ไม่พบข้อความในภาพ';
+
+          lastImageBySource.delete(skey);
+          return safeReply(replyToken, { type: 'text', text: `🤖 DT Helper อ่านให้แล้วครับ:\n\n${text}` });
+        } catch (err) {
+          console.error('OCR Error:', err.response?.data || err.message);
+          return safeReply(replyToken, { type: 'text', text: 'ขออภัย อ่านรูปไม่ได้ครับ' });
+        }
       }
-      return;
+      // ถ้ามีรูปค้างแต่ไม่เข้าเงื่อนไข wantsOCR → เงียบไว้
     }
 
     // D) Fallback → AI (1:1 ตอบทุกข้อความ, กลุ่ม/รูม ต้องมี trigger)
